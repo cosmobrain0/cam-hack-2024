@@ -139,7 +139,13 @@ let highlightedBody = null;
 //     context.stroke();
 //     window.requestAnimationFrame(render);
 // })();
-let renderer = Matter.Render.create({element: document.body, engine: engine});
+let renderer = Matter.Render.create({
+    element: document.body, 
+    engine: engine,
+    options: {
+        wireframes: false // Enable colour
+    }
+});
 Matter.Render.run(renderer);
 
 let shapeMode = "";
@@ -162,9 +168,10 @@ function createRedCircle() {
     // Create a circle and add it to the world
     redCircle = Bodies.circle(x, y, 30, {
         isStatic: true, // Prevents it from being affected by gravity
-        fillStyle: 'transparent', // No fill for the circle
-        strokeStyle: 'red', // Set stroke (outline) color to red
-        lineWidth: 5 // Set the outline thickness
+
+        render: {
+            strokeStyle: '#f00', // Set stroke (outline) color to red
+        }
     });
 
     Composite.add(engine.world, redCircle);
