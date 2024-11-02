@@ -9,7 +9,9 @@ var Engine = Matter.Engine,
     Constraint = Matter.Constraint;
 
 // create an engine
-var engine = Engine.create({gravity: Vector.create(0, 0)});
+var engine = Engine.create({
+    // gravity: Vector.create(0, 0)
+});
 
 // // create a renderer
 // var render = Render.create({
