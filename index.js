@@ -9,7 +9,7 @@ var Engine = Matter.Engine,
     Constraint = Matter.Constraint;
 
 // create an engine
-var engine = Engine.create();
+var engine = Engine.create({gravity: Vector.create(0, 0)});
 
 // // create a renderer
 // var render = Render.create({
@@ -50,9 +50,13 @@ canvas.height = 600;
 
 document.body.appendChild(canvas);
 
+let previousUpdateTime = Date.now();
 (function run() {
-    boxA.force.y += -0.007;
-    Engine.update(engine, 1000 / 60);
+    let currentTime = Date.now();
+
+    Engine.update(engine, currentTime-previousUpdateTime);
+
+    previousUpdateTime = currentTime;
     window.requestAnimationFrame(run);
 })();
 
