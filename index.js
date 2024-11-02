@@ -23,21 +23,13 @@ var boxB = Bodies.rectangle(450, 50, 80, 80);
 var ground = Bodies.rectangle(400, 610, 810, 60, { isStatic: true });
 let boxAToB = Constraint.create({
     length: 200,
-    stiffness: 0.001,
+    stiffness: 1,
     bodyA: boxA,
     bodyB: boxB,
 });
 
-
-
-
-
 // add all of the bodies to the world
 Composite.add(engine.world, [boxA, boxB, ground, boxAToB]);
-
-
-
-
 
 // // run the renderer
 // Render.run(render);

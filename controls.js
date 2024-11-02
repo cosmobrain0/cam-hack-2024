@@ -40,7 +40,7 @@ canvas.addEventListener('click', e => {
             bodyA: body,
             bodyB: highlightedBody,
             length: 100,
-            stiffness: 0.01,
+            stiffness: 1,
         })])
         highlightedBody = null;
     } else {
