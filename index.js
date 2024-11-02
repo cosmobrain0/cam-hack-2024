@@ -43,10 +43,12 @@ canvas.height = 600;
 document.body.appendChild(canvas);
 
 (function run() {
+    boxA.force.y += -0.007;
     Engine.update(engine, 1000 / 60);
     window.requestAnimationFrame(run);
 })();
 
+let highlightedBody = null;
 (function render() {
     let bodies = Composite.allBodies(engine.world);
     let constraints = Composite.allConstraints(engine.world);
@@ -72,6 +74,22 @@ document.body.appendChild(canvas);
         context.lineTo(vertices[0].x, vertices[0].y);
     }
     context.stroke();
+
+    if (highlightedBody) {
+        
+        context.beginPath();
+        context.fillStyle = "#07f";
+        let vertices = highlightedBody.vertices;
+
+        context.moveTo(vertices[0].x, vertices[0].y);
+
+        for (let j = 1; j < vertices.length; j += 1) {
+            context.lineTo(vertices[j].x, vertices[j].y);
+        }
+
+        context.lineTo(vertices[0].x, vertices[0].y);
+        context.fill();
+    }
 
     context.beginPath();
     for (let constraint of constraints) {
@@ -100,4 +118,3 @@ const selectRectangle = () => {
     let positionY = Math.random()*canvas.height;
     Composite.add(engine.world, Bodies.rectangle(positionX, positionY, 200, 50));
 };
-
