@@ -28,8 +28,16 @@ let boxAToB = Constraint.create({
     bodyB: boxB,
 });
 
+
+
+
+
 // add all of the bodies to the world
 Composite.add(engine.world, [boxA, boxB, ground, boxAToB]);
+
+
+
+
 
 // // run the renderer
 // Render.run(render);
@@ -111,12 +119,52 @@ let highlightedBody = null;
     window.requestAnimationFrame(render);
 })();
 
+let shapeMode = "";
+//toggle for sqaure button
 const selectSquare = () => {
     
     shapeMode = "square";
 };
-
+//toggle for rectangle button
 const selectRectangle = () => {
 
     shapeMode = "rectangle";
 };
+let redCircle;
+
+function createRedCircle() {
+    const x = Math.random() * (canvas.width - 60) + 30; // To keep it within bounds
+    const y = Math.random() * (canvas.height - 60) + 30; // To keep it within bounds
+
+    // Create a circle and add it to the world
+    redCircle = Bodies.circle(x, y, 30, {
+        isStatic: true, // Prevents it from being affected by gravity
+        fillStyle: 'transparent', // No fill for the circle
+        strokeStyle: 'red', // Set stroke (outline) color to red
+        lineWidth: 5 // Set the outline thickness
+    });
+
+    Composite.add(engine.world, redCircle);
+}
+
+createRedCircle();
+Matter.Events.on(engine, 'collisionStart', function (event) {
+    const pairs = event.pairs;
+
+    pairs.forEach(pair => {
+        if (pair.bodyA === redCircle || pair.bodyB === redCircle) {
+            // If red circle collides with any body, reposition it
+            repositionCircle();
+        }
+    });
+});
+
+// Function to reposition the red circle randomly
+function repositionCircle() {
+    const x = Math.random() * (canvas.width - 60) + 30; // To keep it within bounds
+    const y = Math.random() * (canvas.height - 60) + 30; // To keep it within bounds
+
+    // Update the position of the red circle
+    Body.setPosition(redCircle, { x: x, y: y });
+}
+
