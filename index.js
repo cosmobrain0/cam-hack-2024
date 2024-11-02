@@ -20,34 +20,61 @@ var engine = Engine.create({
 // });
 
 // create two boxes and a ground
-var boxA = Bodies.rectangle(400, 200, 80, 80);
-var boxB = Bodies.rectangle(450, 50, 80, 80);
+var boxA = Bodies.rectangle(200, 200, 80, 80);
+var boxB = Bodies.rectangle(400, 100, 80, 80);
 var ground = Bodies.rectangle(400, 610, 810, 60, { isStatic: true });
 let boxAToB = Constraint.create({
     length: 200,
-    stiffness: 0.001,
+    stiffness: 1,
     bodyA: boxA,
+    pointA: Vector.create(0, 40),
     bodyB: boxB,
+    pointB: Vector.create(0, -40)
+});
+let boxAToB2 = Constraint.create({
+    length: 200,
+    stiffness: 1,
+    bodyA: boxA,
+    pointA: Vector.create(0, -40),
+    bodyB: boxB,
+    pointB: Vector.create(0, 40)
+});
+let boxAToB3 = Constraint.create({
+    length: 150,
+    stiffness: 1,
+    bodyA: boxA,
+    pointA: Vector.create(40, 0),
+    bodyB: boxB,
+    pointB: Vector.create(-40, 0)
+});
+let boxAToB4 = Constraint.create({
+    length: 250,
+    stiffness: 1,
+    bodyA: boxA,
+    pointA: Vector.create(-40, 0),
+    bodyB: boxB,
+    pointB: Vector.create(40, 0)
 });
 
 // add all of the bodies to the world
-Composite.add(engine.world, [boxA, boxB, ground, boxAToB]);
+Composite.add(engine.world, [boxA, boxB, ground, boxAToB, boxAToB2, boxAToB3, boxAToB4]);
 
 // // run the renderer
 // Render.run(render);
 
-let canvas = document.createElement('canvas');
-let context = canvas.getContext('2d');
-
-canvas.width = 800;
-canvas.height = 600;
-
-document.body.appendChild(canvas);
-
+let canvas;
 let previousUpdateTime = Date.now();
 (function run() {
+    if (!canvas) {
+        canvas = document.getElementsByTagName("canvas")[0];
+    }
+    if (canvas) {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+    }
     let currentTime = Date.now();
 
+    // boxA.angle = boxB.angle = Vector.angle(Vector.sub(boxB.position, boxA.position), Vector.create(1, 0));
     Engine.update(engine, currentTime-previousUpdateTime);
 
     previousUpdateTime = currentTime;
@@ -55,63 +82,65 @@ let previousUpdateTime = Date.now();
 })();
 
 let highlightedBody = null;
-(function render() {
-    let bodies = Composite.allBodies(engine.world);
-    let constraints = Composite.allConstraints(engine.world);
-
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
+// (function render() {
+//     let bodies = Composite.allBodies(engine.world);
+//     let constraints = Composite.allConstraints(engine.world);
 
 
-    context.fillStyle = '#fff';
-    context.fillRect(0, 0, canvas.width, canvas.height);
 
-    context.beginPath();
+//     context.fillStyle = '#fff';
+//     context.fillRect(0, 0, canvas.width, canvas.height);
 
-    for (let i = 0; i < bodies.length; i += 1) {
-        let vertices = bodies[i].vertices;
+//     context.beginPath();
 
-        context.moveTo(vertices[0].x, vertices[0].y);
+//     for (let i = 0; i < bodies.length; i += 1) {
+//         let vertices = bodies[i].vertices;
 
-        for (let j = 1; j < vertices.length; j += 1) {
-            context.lineTo(vertices[j].x, vertices[j].y);
-        }
+//         context.moveTo(vertices[0].x, vertices[0].y);
 
-        context.lineTo(vertices[0].x, vertices[0].y);
-    }
-    context.stroke();
+//         for (let j = 1; j < vertices.length; j += 1) {
+//             context.lineTo(vertices[j].x, vertices[j].y);
+//         }
 
-    if (highlightedBody) {
+//         context.lineTo(vertices[0].x, vertices[0].y);
+//     }
+//     context.stroke();
+
+//     if (highlightedBody) {
         
-        context.beginPath();
-        context.fillStyle = "#07f";
-        let vertices = highlightedBody.vertices;
+//         context.beginPath();
+//         context.fillStyle = "#07f";
+//         let vertices = highlightedBody.vertices;
 
-        context.moveTo(vertices[0].x, vertices[0].y);
+//         context.moveTo(vertices[0].x, vertices[0].y);
 
-        for (let j = 1; j < vertices.length; j += 1) {
-            context.lineTo(vertices[j].x, vertices[j].y);
-        }
+//         for (let j = 1; j < vertices.length; j += 1) {
+//             context.lineTo(vertices[j].x, vertices[j].y);
+//         }
 
-        context.lineTo(vertices[0].x, vertices[0].y);
-        context.fill();
-    }
+//         context.lineTo(vertices[0].x, vertices[0].y);
+//         context.fill();
+//     }
 
-    context.beginPath();
-    for (let constraint of constraints) {
-        let bodyAPosition = constraint.bodyA.position;
-        let bodyBPosition = constraint.bodyB.position;
-        context.moveTo(bodyAPosition.x, bodyAPosition.y);
-        context.lineTo(bodyBPosition.x, bodyBPosition.y);
-    }
-    context.stroke();
+//     context.beginPath();
+//     for (let constraint of constraints) {
+//         let bodyAPosition = Vector.add(constraint.bodyA.position, constraint.pointA);
+//         let bodyBPosition = Vector.add(constraint.bodyB.position, constraint.pointB);
+//         context.moveTo(bodyAPosition.x, bodyAPosition.y);
+//         context.lineTo(bodyBPosition.x, bodyBPosition.y);
+//     }
+//     context.stroke();
+
+    
 
 
-    context.lineWidth = 3;
-    context.strokeStyle = '#000';
-    context.stroke();
-    window.requestAnimationFrame(render);
-})();
+//     context.lineWidth = 3;
+//     context.strokeStyle = '#000';
+//     context.stroke();
+//     window.requestAnimationFrame(render);
+// })();
+let renderer = Matter.Render.create({element: document.body, engine: engine});
+Matter.Render.run(renderer);
 
 let shapeMode = "";
 //toggle for sqaure button
@@ -127,8 +156,8 @@ const selectRectangle = () => {
 let redCircle;
 
 function createRedCircle() {
-    const x = Math.random() * (canvas.width - 60) + 30; // To keep it within bounds
-    const y = Math.random() * (canvas.height - 60) + 30; // To keep it within bounds
+    const x = Math.random() * (window.innerWidth - 60) + 30; // To keep it within bounds
+    const y = Math.random() * (window.innerHeight - 60) + 30; // To keep it within bounds
 
     // Create a circle and add it to the world
     redCircle = Bodies.circle(x, y, 30, {
@@ -155,8 +184,8 @@ Matter.Events.on(engine, 'collisionStart', function (event) {
 
 // Function to reposition the red circle randomly
 function repositionCircle() {
-    const x = Math.random() * (canvas.width - 60) + 30; // To keep it within bounds
-    const y = Math.random() * (canvas.height - 60) + 30; // To keep it within bounds
+    const x = Math.random() * (window.innerWidth - 60) + 30; // To keep it within bounds
+    const y = Math.random() * (window.innerHeight - 60) + 30; // To keep it within bounds
 
     // Update the position of the red circle
     Body.setPosition(redCircle, { x: x, y: y });

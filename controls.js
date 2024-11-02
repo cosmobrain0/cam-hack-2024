@@ -18,7 +18,8 @@ const accelarate = (box, localVelocity) => {
     box.force.y += acceleration.y;
 }
 
-canvas.addEventListener('click', e => {
+window.addEventListener('click', e => {
+    if (!(e.target instanceof HTMLCanvasElement)) return;
     let body = Matter.Query.point(Composite.allBodies(engine.world), Vector.create(e.clientX, e.clientY))[0];
     if (!body) {
         let positionX = e.clientX;
