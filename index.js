@@ -9,7 +9,7 @@ var Engine = Matter.Engine,
     Constraint = Matter.Constraint;
 
 // create an engine
-var engine = Engine.create();
+var engine = Engine.create({gravity: Vector.create(0, 0)});
 
 // // create a renderer
 // var render = Render.create({
@@ -46,7 +46,6 @@ let previousUpdateTime = Date.now();
 (function run() {
     let currentTime = Date.now();
 
-    boxA.force.y += -0.007;
     Engine.update(engine, currentTime-previousUpdateTime);
 
     previousUpdateTime = currentTime;

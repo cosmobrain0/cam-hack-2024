@@ -4,9 +4,20 @@ function applyRotate(body, amount) {
 }
 
 window.addEventListener('keydown', e => {
-    if (e.key == "a") boxA.force.y -= 0.2
-    if (e.key == "d") boxB.force.y -= 0.2
+    
+    if (e.key == "a") accelarate(boxA, Vector.create(0.2, 0));
+    if (e.key == "d") accelarate(boxB, Vector.create(-0.2, 0));
 });
+
+/**
+    @param {Matter.Body} box
+    @param {Matter.Vector} localVelocity
+*/
+const accelarate = (box, localVelocity) => {
+    let acceleration = Vector.rotate(localVelocity, box.angle);
+    box.force.x += acceleration.x;
+    box.force.y += acceleration.y;
+}
 
 canvas.addEventListener('click', e => {
     
