@@ -42,9 +42,14 @@ canvas.height = 600;
 
 document.body.appendChild(canvas);
 
+let previousUpdateTime = Date.now();
 (function run() {
+    let currentTime = Date.now();
+
     boxA.force.y += -0.007;
-    Engine.update(engine, 1000 / 60);
+    Engine.update(engine, currentTime-previousUpdateTime);
+
+    previousUpdateTime = currentTime;
     window.requestAnimationFrame(run);
 })();
 
