@@ -4,7 +4,8 @@ var Engine = Matter.Engine,
     Runner = Matter.Runner,
     Bodies = Matter.Bodies,
     Composite = Matter.Composite,
-    Vector = Matter.Vector;
+    Vector = Matter.Vector,
+    Constraint = Matter.Constraint;
 
 // create an engine
 var engine = Engine.create();
@@ -35,6 +36,7 @@ canvas.height = 600;
 document.body.appendChild(canvas);
 
 (function run() {
+    boxA.force.y += -0.007;
     Engine.update(engine, 1000 / 60);
     window.requestAnimationFrame(run);
 })();
