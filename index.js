@@ -25,7 +25,7 @@ let boxAToB = Constraint.create({
     stiffness: 0.001,
     bodyA: boxA,
     bodyB: boxB,
-})
+});
 
 // add all of the bodies to the world
 Composite.add(engine.world, [boxA, boxB, ground, boxAToB]);
@@ -97,4 +97,10 @@ const selectSquare = () => {
     let positionX = Math.random()*canvas.width;
     let positionY = Math.random()*canvas.height;
     Composite.add(engine.world, Bodies.rectangle(positionX, positionY, 50, 50));
+};
+
+const selectRectangle = () => {
+    let positionX = Math.random()*canvas.width;
+    let positionY = Math.random()*canvas.height;
+    Composite.add(engine.world, Bodies.rectangle(positionX, positionY, 200, 50));
 };
