@@ -42,7 +42,6 @@ canvas.height = 600;
 document.body.appendChild(canvas);
 
 (function run() {
-    boxA.force.y += -0.007;
     Engine.update(engine, 1000 / 60);
     window.requestAnimationFrame(run);
 })();
@@ -79,8 +78,14 @@ document.body.appendChild(canvas);
     window.requestAnimationFrame(render);
 })();
 
+function applyRotate(body, amount) {
+    let angular = Matter.Body.getAngularVelocity;
+    Matter.Body.setAngularVelocity(body, angular + amount);
+}
+
 window.addEventListener('keydown', e => {
-    if (e.key == " ") boxA.force.y = -0.5;
+    if (e.key == "a") boxA.force.y -= 0.2
+    if (e.key == "d") boxB.force.y -= 0.2
 })
 
 // test
