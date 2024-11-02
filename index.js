@@ -42,10 +42,12 @@ canvas.height = 600;
 document.body.appendChild(canvas);
 
 (function run() {
+    boxA.force.y += -0.007;
     Engine.update(engine, 1000 / 60);
     window.requestAnimationFrame(run);
 })();
 
+let highlightedBody = null;
 (function render() {
     let bodies = Composite.allBodies(engine.world);
     let constraints = Composite.allConstraints(engine.world);
@@ -72,6 +74,22 @@ document.body.appendChild(canvas);
     }
     context.stroke();
 
+    if (highlightedBody) {
+        
+        context.beginPath();
+        context.fillStyle = "#07f";
+        let vertices = highlightedBody.vertices;
+
+        context.moveTo(vertices[0].x, vertices[0].y);
+
+        for (let j = 1; j < vertices.length; j += 1) {
+            context.lineTo(vertices[j].x, vertices[j].y);
+        }
+
+        context.lineTo(vertices[0].x, vertices[0].y);
+        context.fill();
+    }
+
     context.beginPath();
     for (let constraint of constraints) {
         let bodyAPosition = constraint.bodyA.position;
@@ -88,14 +106,8 @@ document.body.appendChild(canvas);
     window.requestAnimationFrame(render);
 })();
 
-function applyRotate(body, amount) {
-    let angular = Matter.Body.getAngularVelocity;
-    Matter.Body.setAngularVelocity(body, angular + amount);
-}
-
 window.addEventListener('keydown', e => {
-    if (e.key == "a") boxA.force.y -= 0.2
-    if (e.key == "d") boxB.force.y -= 0.2
+    if (e.key == " ") boxA.force.y = -0.5;
 });
 
 const selectSquare = () => {
@@ -110,23 +122,36 @@ const selectRectangle = () => {
     Composite.add(engine.world, Bodies.rectangle(positionX, positionY, 200, 50));
 };
 
-canvas.addEventListener('click', (event) => {
-    // Calculate position based on mouse click
-    const x = event.clientX;
-    const y = event.clientY;
+canvas.addEventListener('click', e => {
+    let body = Matter.Query.point(Composite.allBodies(engine.world), Vector.create(e.clientX, e.clientY))[0];
+    if (!body) {
+        // Calculate position based on mouse click
+        const x = e.clientX;
+        const y = e.clientY;
 
-    // Create two new boxes at the click location, slightly offset from each other
-    const boxC = Bodies.rectangle(x - 40, y, 80, 80);
-    const boxD = Bodies.rectangle(x + 40, y, 80, 80);
+        // Create two new boxes at the click location, slightly offset from each other
+        const boxC = Bodies.rectangle(x - 40, y, 80, 80);
+        const boxD = Bodies.rectangle(x + 40, y, 80, 80);
 
-    // Create a rod (constraint) between the new boxes
-    const rod = Constraint.create({
-        length: 80,
-        stiffness: 0.9,
-        bodyA: boxC,
-        bodyB: boxD
-    });
+        // Create a rod (constraint) between the new boxes
+        const rod = Constraint.create({
+            length: 80,
+            stiffness: 0.9,
+            bodyA: boxC,
+            bodyB: boxD
+        });
 
-    // Add the new boxes and the rod to the world
-    Composite.add(engine.world, [boxC, boxD, rod]);
-});
+        // Add the new boxes and the rod to the world
+        Composite.add(engine.world, [boxC, boxD, rod]);
+    } else if (highlightedBody) {
+        Composite.add(engine.world, [Constraint.create({
+            bodyA: body,
+            bodyB: highlightedBody,
+            length: 100,
+            stiffness: 0.01,
+        })])
+        highlightedBody = null;
+    } else {
+        highlightedBody = body;
+    }
+})
