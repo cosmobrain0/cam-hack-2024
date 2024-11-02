@@ -3,7 +3,8 @@ var Engine = Matter.Engine,
     Render = Matter.Render,
     Runner = Matter.Runner,
     Bodies = Matter.Bodies,
-    Composite = Matter.Composite;
+    Composite = Matter.Composite,
+    Vector = Matter.Vector;
 
 // create an engine
 var engine = Engine.create();
@@ -34,8 +35,8 @@ canvas.height = 600;
 document.body.appendChild(canvas);
 
 (function run() {
-    window.requestAnimationFrame(run);
     Engine.update(engine, 1000 / 60);
+    window.requestAnimationFrame(run);
 })();
 
 (function render() {
@@ -44,7 +45,6 @@ document.body.appendChild(canvas);
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
 
-    window.requestAnimationFrame(render);
 
     context.fillStyle = '#fff';
     context.fillRect(0, 0, canvas.width, canvas.height);
@@ -66,4 +66,9 @@ document.body.appendChild(canvas);
     context.lineWidth = 3;
     context.strokeStyle = '#000';
     context.stroke();
+    window.requestAnimationFrame(render);
 })();
+
+window.addEventListener('keydown', e => {
+    if (e.key == " ") boxA.force.y = -0.5;
+})
