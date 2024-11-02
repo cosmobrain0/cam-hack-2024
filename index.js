@@ -19,45 +19,8 @@ var engine = Engine.create({
 //     engine: engine
 // });
 
-// create two boxes and a ground
-var boxA = Bodies.rectangle(200, 200, 80, 80);
-var boxB = Bodies.rectangle(400, 100, 80, 80);
 var ground = Bodies.rectangle(window.innerWidth / 2, window.innerHeight, 2060, 60, { isStatic: true });
-let boxAToB = Constraint.create({
-    length: 200,
-    stiffness: 1,
-    bodyA: boxA,
-    pointA: Vector.create(0, 40),
-    bodyB: boxB,
-    pointB: Vector.create(0, -40)
-});
-let boxAToB2 = Constraint.create({
-    length: 200,
-    stiffness: 1,
-    bodyA: boxA,
-    pointA: Vector.create(0, -40),
-    bodyB: boxB,
-    pointB: Vector.create(0, 40)
-});
-let boxAToB3 = Constraint.create({
-    length: 150,
-    stiffness: 1,
-    bodyA: boxA,
-    pointA: Vector.create(40, 0),
-    bodyB: boxB,
-    pointB: Vector.create(-40, 0)
-});
-let boxAToB4 = Constraint.create({
-    length: 250,
-    stiffness: 1,
-    bodyA: boxA,
-    pointA: Vector.create(-40, 0),
-    bodyB: boxB,
-    pointB: Vector.create(40, 0)
-});
-
-// add all of the bodies to the world
-Composite.add(engine.world, [boxA, boxB, ground, boxAToB, boxAToB2, boxAToB3, boxAToB4]);
+Composite.add(engine.world, [ground]);
 
 // // run the renderer
 // Render.run(render);
@@ -86,16 +49,12 @@ let highlightedBody = null;
 //     let bodies = Composite.allBodies(engine.world);
 //     let constraints = Composite.allConstraints(engine.world);
 
-
-
 //     context.fillStyle = '#fff';
 //     context.fillRect(0, 0, canvas.width, canvas.height);
-
 //     context.beginPath();
 
 //     for (let i = 0; i < bodies.length; i += 1) {
 //         let vertices = bodies[i].vertices;
-
 //         context.moveTo(vertices[0].x, vertices[0].y);
 
 //         for (let j = 1; j < vertices.length; j += 1) {
@@ -130,10 +89,6 @@ let highlightedBody = null;
 //         context.lineTo(bodyBPosition.x, bodyBPosition.y);
 //     }
 //     context.stroke();
-
-    
-
-
 //     context.lineWidth = 3;
 //     context.strokeStyle = '#000';
 //     context.stroke();
@@ -149,14 +104,12 @@ let renderer = Matter.Render.create({
 Matter.Render.run(renderer);
 
 let shapeMode = "";
-//toggle for sqaure button
+// toggle for sqaure button
 const selectSquare = () => {
-    
     shapeMode = "square";
 };
-//toggle for rectangle button
+// toggle for rectangle button
 const selectRectangle = () => {
-
     shapeMode = "rectangle";
 };
 let redCircle;
@@ -168,7 +121,6 @@ function createRedCircle() {
     // Create a circle and add it to the world
     redCircle = Bodies.circle(x, y, 30, {
         isStatic: true, // Prevents it from being affected by gravity
-
         render: {
             strokeStyle: '#f00', // Set stroke (outline) color to red
         }
