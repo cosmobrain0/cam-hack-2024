@@ -22,7 +22,7 @@ var engine = Engine.create({
 // create two boxes and a ground
 var boxA = Bodies.rectangle(200, 200, 80, 80);
 var boxB = Bodies.rectangle(400, 100, 80, 80);
-var ground = Bodies.rectangle(400, 610, 810, 60, { isStatic: true });
+var ground = Bodies.rectangle(window.innerWidth / 2, window.innerHeight, 2060, 60, { isStatic: true });
 let boxAToB = Constraint.create({
     length: 200,
     stiffness: 1,
