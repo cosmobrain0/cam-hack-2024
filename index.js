@@ -3,6 +3,7 @@ var Engine = Matter.Engine,
     Render = Matter.Render,
     Runner = Matter.Runner,
     Bodies = Matter.Bodies,
+    Body = Matter.Body,
     Composite = Matter.Composite,
     Vector = Matter.Vector,
     Constraint = Matter.Constraint;
