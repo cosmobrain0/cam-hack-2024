@@ -82,3 +82,5 @@ document.body.appendChild(canvas);
 window.addEventListener('keydown', e => {
     if (e.key == " ") boxA.force.y = -0.5;
 })
+
+// test
