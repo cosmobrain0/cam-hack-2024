@@ -108,13 +108,11 @@ let highlightedBody = null;
 })();
 
 const selectSquare = () => {
-    let positionX = Math.random()*canvas.width;
-    let positionY = Math.random()*canvas.height;
-    Composite.add(engine.world, Bodies.rectangle(positionX, positionY, 50, 50));
+    
+    shapeMode = "square";
 };
 
 const selectRectangle = () => {
-    let positionX = Math.random()*canvas.width;
-    let positionY = Math.random()*canvas.height;
-    Composite.add(engine.world, Bodies.rectangle(positionX, positionY, 200, 50));
+
+    shapeMode = "rectangle";
 };
