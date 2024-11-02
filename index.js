@@ -91,4 +91,10 @@ document.body.appendChild(canvas);
 
 window.addEventListener('keydown', e => {
     if (e.key == " ") boxA.force.y = -0.5;
-})
+});
+
+const selectSquare = () => {
+    let positionX = Math.random()*canvas.width;
+    let positionY = Math.random()*canvas.height;
+    Composite.add(engine.world, Bodies.rectangle(positionX, positionY, 50, 50));
+};
