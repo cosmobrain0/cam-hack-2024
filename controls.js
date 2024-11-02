@@ -9,26 +9,17 @@ window.addEventListener('keydown', e => {
 });
 
 canvas.addEventListener('click', e => {
+    
     let body = Matter.Query.point(Composite.allBodies(engine.world), Vector.create(e.clientX, e.clientY))[0];
     if (!body) {
-        // Calculate position based on mouse click
-        const x = e.clientX;
-        const y = e.clientY;
-
-        // Create two new boxes at the click location, slightly offset from each other
-        const boxC = Bodies.rectangle(x - 40, y, 80, 80);
-        const boxD = Bodies.rectangle(x + 40, y, 80, 80);
-
-        // Create a rod (constraint) between the new boxes
-        const rod = Constraint.create({
-            length: 80,
-            stiffness: 0.9,
-            bodyA: boxC,
-            bodyB: boxD
-        });
-
-        // Add the new boxes and the rod to the world
-        Composite.add(engine.world, [boxC, boxD, rod]);
+        let positionX = event.clientX;
+        let positionY = event.clientY;
+    
+        if (shapeMode === "square") {
+            Composite.add(engine.world, Bodies.rectangle(positionX, positionY, 50, 50));
+        } else if (shapeMode === "rectangle") {
+            Composite.add(engine.world, Bodies.rectangle(positionX, positionY, 200, 50));
+        }
         highlightedBody = null;
     } else if (highlightedBody) {
         Composite.add(engine.world, [Constraint.create({
