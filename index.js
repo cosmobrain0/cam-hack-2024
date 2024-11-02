@@ -41,6 +41,9 @@ document.body.appendChild(canvas);
 (function render() {
     let bodies = Composite.allBodies(engine.world);
 
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
     window.requestAnimationFrame(render);
 
     context.fillStyle = '#fff';
