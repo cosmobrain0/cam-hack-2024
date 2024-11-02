@@ -6,6 +6,7 @@ var Engine = Matter.Engine,
     Body = Matter.Body,
     Composite = Matter.Composite,
     Vector = Matter.Vector,
+    Events = Matter.Events,
     Constraint = Matter.Constraint;
 
 // create an engine
@@ -13,20 +14,9 @@ var engine = Engine.create({
     // gravity: Vector.create(0, 0)
 });
 
-// // create a renderer
-// var render = Render.create({
-//     element: document.body,
-//     engine: engine
-// });
-
-var ground = Bodies.rectangle(window.innerWidth / 2, window.innerHeight, 2060, 60, { isStatic: true });
-Composite.add(engine.world, [ground]);
-
-// // run the renderer
-// Render.run(render);
-
 let canvas;
 let previousUpdateTime = Date.now();
+
 (function run() {
     if (!canvas) {
         canvas = document.getElementsByTagName("canvas")[0];
@@ -94,26 +84,36 @@ let highlightedBody = null;
 //     context.stroke();
 //     window.requestAnimationFrame(render);
 // })();
-let renderer = Matter.Render.create({
+let renderer = Render.create({
     element: document.body, 
     engine: engine,
     options: {
         wireframes: false // Enable colour
     }
 });
-Matter.Render.run(renderer);
+
+Render.run(renderer);
 
 let shapeMode = "";
+
 // toggle for sqaure button
 const selectSquare = () => {
     shapeMode = "square";
 };
+
 // toggle for rectangle button
 const selectRectangle = () => {
     shapeMode = "rectangle";
 };
-let redCircle;
 
+function createGround() {
+    var ground = Bodies.rectangle(window.innerWidth / 2, window.innerHeight, 2060, 60, { isStatic: true });
+    Composite.add(engine.world, [ground]);
+}
+
+createGround();
+
+let redCircle;
 function createRedCircle() {
     const x = Math.random() * (window.innerWidth - 60) + 30; // To keep it within bounds
     const y = Math.random() * (window.innerHeight - 60) + 30; // To keep it within bounds
@@ -129,8 +129,16 @@ function createRedCircle() {
     Composite.add(engine.world, redCircle);
 }
 
-createRedCircle();
-Matter.Events.on(engine, 'collisionStart', function (event) {
+// Function to reposition the red circle randomly
+function repositionCircle() {
+    const x = Math.random() * (window.innerWidth - 60) + 30; // To keep it within bounds
+    const y = Math.random() * (window.innerHeight - 60) + 30; // To keep it within bounds
+
+    // Update the position of the red circle
+    Body.setPosition(redCircle, { x: x, y: y });
+}
+
+Events.on(engine, 'collisionStart', function (event) {
     const pairs = event.pairs;
 
     pairs.forEach(pair => {
@@ -141,12 +149,5 @@ Matter.Events.on(engine, 'collisionStart', function (event) {
     });
 });
 
-// Function to reposition the red circle randomly
-function repositionCircle() {
-    const x = Math.random() * (window.innerWidth - 60) + 30; // To keep it within bounds
-    const y = Math.random() * (window.innerHeight - 60) + 30; // To keep it within bounds
-
-    // Update the position of the red circle
-    Body.setPosition(redCircle, { x: x, y: y });
-}
+createRedCircle();
 
