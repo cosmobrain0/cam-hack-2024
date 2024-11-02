@@ -143,6 +143,7 @@ canvas.addEventListener('click', e => {
 
         // Add the new boxes and the rod to the world
         Composite.add(engine.world, [boxC, boxD, rod]);
+        highlightedBody = null;
     } else if (highlightedBody) {
         Composite.add(engine.world, [Constraint.create({
             bodyA: body,
