@@ -22,7 +22,7 @@ var boxB = Bodies.rectangle(450, 50, 80, 80);
 var ground = Bodies.rectangle(400, 610, 810, 60, { isStatic: true });
 let boxAToB = Constraint.create({
     length: 200,
-    stiffness: 0.7,
+    stiffness: 0.001,
     bodyA: boxA,
     bodyB: boxB,
 })
@@ -71,6 +71,16 @@ document.body.appendChild(canvas);
 
         context.lineTo(vertices[0].x, vertices[0].y);
     }
+    context.stroke();
+
+    context.beginPath();
+    for (let constraint of constraints) {
+        let bodyAPosition = constraint.bodyA.position;
+        let bodyBPosition = constraint.bodyB.position;
+        context.moveTo(bodyAPosition.x, bodyAPosition.y);
+        context.lineTo(bodyBPosition.x, bodyBPosition.y);
+    }
+    context.stroke();
 
 
     context.lineWidth = 3;
@@ -82,5 +92,3 @@ document.body.appendChild(canvas);
 window.addEventListener('keydown', e => {
     if (e.key == " ") boxA.force.y = -0.5;
 })
-
-// test
