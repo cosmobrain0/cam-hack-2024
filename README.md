@@ -6,3 +6,5 @@ https://cosmobrain0.github.io/cam-hack-2024/
 Thanks to
 - matter.js
 - https://opengameart.org/content/rythm-garden-second-cruise-congusbongus-remixed
+- https://opengameart.org/sites/default/files/item_pickup.wav
+

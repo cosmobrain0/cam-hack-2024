@@ -5,8 +5,15 @@ function createGround() {
 
 let redCircle;
 function createRedCircle() {
-    const x = Math.random() * (window.innerWidth - 60) + 30 - window.innerWidth/2 + ship.position.x; // To keep it within bounds
-    const y = Math.random() * (window.innerHeight - 60) + 30 - window.innerHeight/2 + ship.position.y; // To keep it within bounds
+
+    // the circles can spawn quite far from the player
+    // and the circles can't spawn too close
+    let x, y;
+    let distance = () => Vector.magnitude(Vector.sub(Vector.create(x, y), ship.position));
+    do {
+        x = Math.random() * (window.innerWidth*2 - 60) + 30 - window.innerWidth + ship.position.x; // To keep it within bounds
+        y = Math.random() * (window.innerHeight*2 - 60) + 30 - window.innerHeight + ship.position.y; // To keep it within bounds
+    } while (distance() <= 60);
 
     // Create a circle and add it to the world
     let redCircle = Bodies.circle(x, y, 10, {
@@ -19,6 +26,27 @@ function createRedCircle() {
 
     Composite.add(engine.world, redCircle);
     return redCircle;
+}
+
+function spawnNewAsteroid(oldToDelete) {
+    let index;
+    if (oldToDelete) {
+        index = asteroids.indexOf(oldToDelete);
+        Matter.Composite.remove(engine.world, oldToDelete);
+    } else {
+        let distance = x => Vector.magnitude(Vector.sub(x.position, ship.position));
+        index = 0;
+        let bestDistance = distance(asteroids[0]);
+        for (let i=1; i<asteroids.length; i++) {
+            let currentDistance = distance(asteroids[i]);
+            if (currentDistance <= bestDistance) {
+                index = i;
+                bestDistance = currentDistance;
+            }
+        }
+        Matter.Composite.remove(engine.world, oldToDelete);
+    }
+    asteroids[index] = constructAsteroid();
 }
 
 // Function to reposition the red circle randomly
@@ -144,6 +172,9 @@ window.addEventListener('load', _ => {
             scoreDecay = 0
             Composite.add(engine.world, [constructConstraint(other, redCircle)]);
             repositionCircle();
+
+            let sound = new Audio("./sounds/item_pickup.wav");
+            sound.play();
         }
 
         let asteroidPair = pairs.find(pair =>
