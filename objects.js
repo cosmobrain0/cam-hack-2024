@@ -54,7 +54,6 @@ function createShip() {
         [centerX + 50, centerY + 50 * Math.sqrt(3)],
     ];
 
-    console.log("hello");
     var squares = coords.map(([x, y]) => Bodies.rectangle(x, y, 20, 20));
     squares.push(core);
 
@@ -74,7 +73,6 @@ function createShip() {
 }
 
 window.addEventListener('load', _ => {
-    console.log("hi");
     redCircle = createRedCircle();
     Events.on(engine, 'collisionStart', function (event) {
         const pairs = event.pairs;
@@ -89,9 +87,7 @@ window.addEventListener('load', _ => {
         }
     });
 
-    console.log("starting stuff");
     Events.on(renderer, 'beforeRender', _ => {
-        console.log("before render");
         // change the `10` to `0` to make the camera follow properly
         let centre = Vector.sub(ship.position, Vector.mult(ship.velocity, 0)); 
         let extents = Vector.create(window.innerWidth/2, window.innerHeight/2);
@@ -101,4 +97,23 @@ window.addEventListener('load', _ => {
         renderer.canvas.height = window.innerHeight;
         // Matter.Bounds.translate(renderer.bounds, Vector.create(100, 0));
     });
+    Events.on(renderer, 'afterRender', _ => {
+        const distanceThreshold = 150;
+
+        let offset = Vector.sub(redCircle.position, ship.position);
+        let originalDistance = Vector.magnitude(offset);
+        let distance = Math.min(distanceThreshold, originalDistance);
+        offset = Vector.mult(Vector.normalise(offset), distance);
+        let ctx = renderer.context;
+        let centre = Vector.create(renderer.canvas.width/2, renderer.canvas.height/2);
+
+        if (originalDistance >= distanceThreshold) {
+            let offsetAngle = Vector.angle(offset, Vector.create(1, 0));
+            ctx.beginPath();
+            ctx.arc(centre.x+offset.x, centre.y+offset.y, 10.0, offsetAngle-5*Math.PI/4, offsetAngle-3*Math.PI/4);
+            ctx.lineTo(centre.x+offset.x, centre.y+offset.y);
+            ctx.fillStyle = "#f00";
+            ctx.fill();
+        }
+    })
 })
