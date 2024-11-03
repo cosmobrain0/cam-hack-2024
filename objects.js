@@ -28,6 +28,27 @@ function createRedCircle() {
     return redCircle;
 }
 
+function spawnNewAsteroid(oldToDelete) {
+    let index;
+    if (oldToDelete) {
+        index = asteroids.indexOf(oldToDelete);
+        Matter.Composite.remove(engine.world, oldToDelete);
+    } else {
+        let distance = x => Vector.magnitude(Vector.sub(x.position, ship.position));
+        index = 0;
+        let bestDistance = distance(asteroids[0]);
+        for (let i=1; i<asteroids.length; i++) {
+            let currentDistance = distance(asteroids[i]);
+            if (currentDistance <= bestDistance) {
+                index = i;
+                bestDistance = currentDistance;
+            }
+        }
+        Matter.Composite.remove(engine.world, oldToDelete);
+    }
+    asteroids[index] = constructAsteroid();
+}
+
 // Function to reposition the red circle randomly
 function repositionCircle() {
 
