@@ -20,7 +20,11 @@ function createRedCircle() {
         isStatic: false,
         density: 0.01,
         render: {
-            fillStyle: '#f00',
+            sprite: {
+                texture: 'img/junk.png',
+                xScale: 45/512,
+                yScale: 45/512,
+            }
         }
     });
 
@@ -39,14 +43,14 @@ function spawnNewAsteroid(oldToDelete) {
         let bestDistance = distance(asteroids[0]);
         for (let i=1; i<asteroids.length; i++) {
             let currentDistance = distance(asteroids[i]);
-            if (currentDistance <= bestDistance) {
+            if (currentDistance > bestDistance) {
                 index = i;
                 bestDistance = currentDistance;
             }
         }
-        Matter.Composite.remove(engine.world, oldToDelete);
+        Matter.Composite.remove(engine.world, asteroids[index]);
     }
-    asteroids[index] = constructAsteroid();
+    asteroids[index] = constructAsteroid(true);
 }
 
 // Function to reposition the red circle randomly
@@ -57,9 +61,10 @@ function repositionCircle() {
     redCircle = createRedCircle();
 }
 
-function constructAsteroid() {
+function constructAsteroid(offscreen = false) {
     let angle = Math.random() * 2 * Math.PI;
     let radius = Math.max(-Math.log2(Math.random()) * 5000, 200);
+    if (offscreen) radius += Math.sqrt(600*600 + 500*500); // good enough?
     let asteroid = Matter.Bodies.rectangle(
         radius * Math.cos(angle),
         radius * Math.sin(angle),
@@ -153,6 +158,9 @@ window.addEventListener('load', _ => {
                     Matter.Composite.remove(engine.world, pair.bodyB);
                     scoreDecay += 20;
                     score -= 5000;
+                    let sound = new Audio("./sounds/sfx_-_death_explosion.ogg");
+                    sound.playbackRate = 4
+                    sound.play(); // if someone wants to add another sound go ahead :shrug:
                     applyRotate(ship, Math.random()*20 - 10);
                 }
             }
