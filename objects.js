@@ -153,6 +153,9 @@ window.addEventListener('load', _ => {
                     Matter.Composite.remove(engine.world, pair.bodyB);
                     scoreDecay += 20;
                     score -= 5000;
+                    let sound = new Audio("./sounds/sfx_-_death_explosion.ogg");
+                    sound.playbackRate = 4
+                    sound.play(); // if someone wants to add another sound go ahead :shrug:
                     applyRotate(ship, Math.random()*20 - 10);
                 }
             }
