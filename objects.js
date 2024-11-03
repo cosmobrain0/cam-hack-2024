@@ -31,7 +31,7 @@ function repositionCircle() {
 
 function constructAsteroid() {
     let angle = Math.random() * 2 * Math.PI;
-    let radius = -Math.log2(Math.random()) * 5000;
+    let radius = Math.max(-Math.log2(Math.random()) * 5000, 200);
     let asteroid = Bodies.rectangle(
         radius * Math.cos(angle),
         radius * Math.sin(angle),
