@@ -1,6 +1,7 @@
 let score = 100000;
 let scoreIncrease = 30000;
 let scoreDecay = 0;
+let gameOver = false;
 let getHighScore = () => {
   let result = parseInt(localStorage.getItem("highscore"));
   if (isNaN(result)) {
@@ -19,3 +20,7 @@ let updateScore = v => {
 }
 
 updateScore(score);
+
+let restartGame = () => {
+  location.reload(); // this is a beautiful, wonderful, great idea with no flaws whatsoever
+}

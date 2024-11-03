@@ -14,6 +14,12 @@ let keybinds = {
     "a": () => applyRotate(ship, -(0.1 + 0.02*shipPartsCount)),
     "d": () => applyRotate(ship, 0.1 + 0.02*shipPartsCount),
     "w": () => boost(ship, 0.0003*shipPartsCount),
+    "r": () => {
+        console.log("hi there");
+        if (gameOver) {
+            restartGame();
+        }
+    }
 }
 
 function smoothApply() {
