@@ -119,6 +119,7 @@ window.addEventListener('load', _ => {
             if (ship.parts.includes(other)) other = ship;
             shipParts++;
             score += scoreIncrease;
+            scoreDecay = 0
             Composite.add(engine.world, [constructConstraint(other, redCircle)]);
             repositionCircle();
         }
@@ -130,7 +131,7 @@ window.addEventListener('load', _ => {
 
         if (asteroidPair) {
             Matter.Composite.remove(engine.world, ship);
-            alert("GAME OVER");
+            alert("GAME OVER. Your score was ".concat(Math.round((score/100)).toString()).concat("!"));
         }
     });
 
@@ -164,6 +165,7 @@ window.addEventListener('load', _ => {
         }
 
         ctx.fillStyle = "#fff";
-        ctx.fillText(`Score: ${Math.round(score)}`, 50, 50);
+        ctx.font = "30px monospace";
+        ctx.fillText(`Score: ${Math.round(score/100)}`, 50, 50);
     })
 })
