@@ -68,13 +68,13 @@ function constructAsteroid(offscreen = false) {
     let asteroid = Matter.Bodies.rectangle(
         radius * Math.cos(angle),
         radius * Math.sin(angle),
-        40,
-        40,
+        60,
+        60,
         {
             render: { sprite: {
                 texture: 'img/asteroid.png',
-                xScale: 45/512,
-                yScale: 45/512,
+                xScale: 65/512,
+                yScale: 65/512,
             } },
             frictionAir: 0,
             label: "Asteroid",
