@@ -31,8 +31,8 @@ var deltaTime = 0.1;
 
     let currentTime = performance.now();
     deltaTime = currentTime - previousUpdateTime;
-    Engine.update(engine, deltaTime);
     previousUpdateTime = currentTime;
+    Engine.update(engine, deltaTime);
 
     // boxA.angle = boxB.angle = Vector.angle(Vector.sub(boxB.position, boxA.position), Vector.create(1, 0));
     
