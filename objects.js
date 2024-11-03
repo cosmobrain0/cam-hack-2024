@@ -60,13 +60,17 @@ function repositionCircle() {
 function constructAsteroid() {
     let angle = Math.random() * 2 * Math.PI;
     let radius = Math.max(-Math.log2(Math.random()) * 5000, 200);
-    let asteroid = Bodies.rectangle(
+    let asteroid = Matter.Bodies.rectangle(
         radius * Math.cos(angle),
         radius * Math.sin(angle),
         40,
         40,
         {
-            render: {fillStyle: "#fff"},
+            render: { sprite: {
+                texture: 'img/asteroid.png',
+                xScale: 45/512,
+                yScale: 45/512,
+            } },
             frictionAir: 0,
             label: "Asteroid",
         }
