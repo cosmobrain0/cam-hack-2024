@@ -54,28 +54,29 @@ function createShip() {
     let centerY = window.innerHeight / 2;
     let inner = 100 / Math.sqrt(3);
 
-    let core = Bodies.rectangle(centerX, centerY + inner, 60, 60);
+    let core = Bodies.rectangle(centerX, centerY + inner, 20, 20);
     let coords = [
         [centerX, centerY],
         [centerX - 50, centerY + 50 * Math.sqrt(3)],
         [centerX + 50, centerY + 50 * Math.sqrt(3)],
     ];
 
-    var squares = coords.map(([x, y]) => Bodies.rectangle(x, y, 40, 40));
+    var squares = coords.map(([x, y]) => Bodies.rectangle(x, y, 20, 20));
     squares.push(core);
 
-    let constraints = squares.flatMap((a, i) =>
-        squares
-        .slice(i + 1)
-        .map(b => constructConstraint(a, b))
-    )
+    // let constraints = squares.flatMap((a, i) =>
+    //     squares
+    //     .slice(i + 1)
+    //     .map(b => constructConstraint(a, b))
+    // )
 
-    Composite.add(engine.world, core);
-    Body.setParts(core, squares);
+    // Composite.add(engine.world, core);
+    // Body.setParts(core, squares);
     // Composite.add(engine.world, squares);
     // Composite.add(engine.world, constraints);
 
-    ship = core;
+    ship = Body.create({parts: squares});
+    Composite.add(engine.world, ship);
 }
 
 createGround();

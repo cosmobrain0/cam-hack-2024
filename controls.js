@@ -11,9 +11,9 @@ function boost(body, amount) {
 }
 
 let keybinds = {
-    "a": () => applyRotate(ship, -0.1),
-    "d": () => applyRotate(ship, 0.1),
-    "w": () => boost(ship, 0.005),
+    "a": () => applyRotate(ship, -0.2),
+    "d": () => applyRotate(ship, 0.2),
+    "w": () => boost(ship, 0.001),
 }
 
 function smoothApply() {
