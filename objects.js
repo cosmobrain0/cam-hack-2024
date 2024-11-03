@@ -80,12 +80,12 @@ function createShip() {
 
     let core = Bodies.rectangle(centerX, centerY + inner, 40, 40);
     let coords = [
-        [centerX - 50, centerY + 50 * Math.sqrt(3)],
-        [centerX, centerY],
-        [centerX + 50, centerY + 50 * Math.sqrt(3)],
+        [centerX - 50, centerY + 50 * Math.sqrt(3), "Left"],
+        [centerX, centerY, "Centre"],
+        [centerX + 50, centerY + 50 * Math.sqrt(3), "Right"],
     ];
 
-    var squares = coords.map(([x, y]) => Bodies.rectangle(x, y, 20, 20));
+    var squares = coords.map(([x, y, label]) => Bodies.rectangle(x, y, 20, 20, {label: label}));
     squares.push(core);
 
     // let constraints = squares.flatMap((a, i) =>
@@ -121,6 +121,16 @@ window.addEventListener('load', _ => {
             score += scoreIncrease;
             Composite.add(engine.world, [constructConstraint(other, redCircle)]);
             repositionCircle();
+        }
+
+        let asteroidPair = pairs.find(pair =>
+            (pair.bodyA.label == "Asteroid" || pair.bodyB.label == "Asteroid")
+            && (pair.bodyA.parent === ship || pair.bodyB.parent === ship)
+        );
+
+        if (asteroidPair) {
+            Matter.Composite.remove(engine.world, ship);
+            alert("GAME OVER");
         }
     });
 
