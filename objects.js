@@ -209,12 +209,13 @@ window.addEventListener('load', _ => {
         renderer.bounds.max = Vector.add(centre, extents);
         renderer.bounds.min = Vector.sub(centre, extents);
         renderer.canvas.width = window.innerWidth;
-        renderer.canvas.height = window.innerHeight;
         // Bounds.translate(renderer.bounds, Vector.create(100, 0));
         let ctx = renderer.context;
         ctx.font = "bold 48px 'Bebas Neue'";
 
     });
+
+
     Events.on(renderer, 'afterRender', _ => {
         const distanceThreshold = 150;
 

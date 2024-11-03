@@ -39,6 +39,7 @@ let renderer = Render.create({
         hasBounds: true,
         width: window.innerWidth,
         height: window.innerHeight,
+        background: 'transparent',
     },
 });
 
