@@ -5,8 +5,8 @@ function createGround() {
 
 let redCircle;
 function createRedCircle() {
-    const x = Math.random() * (window.innerWidth - 60) + 30; // To keep it within bounds
-    const y = Math.random() * (window.innerHeight - 60) + 30; // To keep it within bounds
+    const x = Math.random() * (window.innerWidth - 60) + 30 - window.innerWidth/2 + ship.position.x; // To keep it within bounds
+    const y = Math.random() * (window.innerHeight - 60) + 30 - window.innerHeight/2 + ship.position.y; // To keep it within bounds
 
     // Create a circle and add it to the world
     let redCircle = Bodies.circle(x, y, 30, {
@@ -27,17 +27,6 @@ function repositionCircle() {
     if (redCircle) redCircle.isSensor = false;
     redCircle = createRedCircle();
 }
-
-Events.on(engine, 'collisionStart', function (event) {
-    const pairs = event.pairs;
-
-    let collidingPair = pairs.find(pair => pair.bodyA === redCircle || pair.bodyB === redCircle);
-    if (collidingPair) {
-        let other = redCircle == collidingPair.bodyA ? collidingPair.bodyB : collidingPair.bodyA;
-        Composite.add(engine.world, [constructConstraint(ship, redCircle)]);
-        repositionCircle();
-    }
-});
 
 function constructConstraint(a, b) {
     return Constraint.create({
@@ -80,7 +69,29 @@ function createShip() {
     Composite.add(engine.world, ship);
 }
 
-createGround();
-console.log("hi");
-createShip();
-redCircle = createRedCircle();
+window.addEventListener('load', _ => {
+    console.log("hi");
+    redCircle = createRedCircle();
+    Events.on(engine, 'collisionStart', function (event) {
+        const pairs = event.pairs;
+
+        let collidingPair = pairs.find(pair => pair.bodyA === redCircle || pair.bodyB === redCircle);
+        if (collidingPair) {
+            let other = redCircle == collidingPair.bodyA ? collidingPair.bodyB : collidingPair.bodyA;
+            Composite.add(engine.world, [constructConstraint(ship, redCircle)]);
+            repositionCircle();
+        }
+    });
+
+    console.log("starting stuff");
+    Events.on(renderer, 'beforeRender', _ => {
+        console.log("before render");
+        let centre = ship.position; 
+        let extents = Vector.create(window.innerWidth/2, window.innerHeight/2);
+        renderer.bounds.max = Vector.add(centre, extents);
+        renderer.bounds.min = Vector.sub(centre, extents);
+        renderer.canvas.width = window.innerWidth;
+        renderer.canvas.height = window.innerHeight;
+        // Matter.Bounds.translate(renderer.bounds, Vector.create(100, 0));
+    });
+})

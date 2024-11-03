@@ -90,12 +90,16 @@ let highlightedBody = null;
 //     context.stroke();
 //     window.requestAnimationFrame(render);
 // })();
+createShip();
 let renderer = Render.create({
     element: document.body, 
     engine: engine,
     options: {
-        wireframes: false // Enable colour
-    }
+        wireframes: false, // Enable colour
+        hasBounds: true,
+        width: window.innerWidth,
+        height: window.innerHeight,
+    },
 });
 
 Render.run(renderer);
