@@ -86,7 +86,8 @@ window.addEventListener('load', _ => {
     console.log("starting stuff");
     Events.on(renderer, 'beforeRender', _ => {
         console.log("before render");
-        let centre = ship.position; 
+        // change the `10` to `0` to make the camera follow properly
+        let centre = Vector.sub(ship.position, Vector.mult(ship.velocity, 10)); 
         let extents = Vector.create(window.innerWidth/2, window.innerHeight/2);
         renderer.bounds.max = Vector.add(centre, extents);
         renderer.bounds.min = Vector.sub(centre, extents);
