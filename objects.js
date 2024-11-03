@@ -68,13 +68,13 @@ function constructAsteroid(offscreen = false) {
     let asteroid = Matter.Bodies.rectangle(
         radius * Math.cos(angle),
         radius * Math.sin(angle),
-        40,
-        40,
+        60,
+        60,
         {
             render: { sprite: {
                 texture: 'img/asteroid.png',
-                xScale: 45/512,
-                yScale: 45/512,
+                xScale: 65/512,
+                yScale: 65/512,
             } },
             frictionAir: 0,
             label: "Asteroid",
@@ -209,12 +209,13 @@ window.addEventListener('load', _ => {
         renderer.bounds.max = Vector.add(centre, extents);
         renderer.bounds.min = Vector.sub(centre, extents);
         renderer.canvas.width = window.innerWidth;
-        renderer.canvas.height = window.innerHeight;
         // Bounds.translate(renderer.bounds, Vector.create(100, 0));
         let ctx = renderer.context;
         ctx.font = "bold 48px 'Bebas Neue'";
 
     });
+
+
     Events.on(renderer, 'afterRender', _ => {
         const distanceThreshold = 150;
 
