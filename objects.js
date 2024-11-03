@@ -54,13 +54,14 @@ function createShip() {
     let centerY = window.innerHeight / 2;
     let inner = 100 / Math.sqrt(3);
 
-    let core = Bodies.rectangle(centerX, centerY + inner, 20, 20);
+    let core = Bodies.rectangle(centerX, centerY + inner, 40, 40);
     let coords = [
-        [centerX, centerY],
         [centerX - 50, centerY + 50 * Math.sqrt(3)],
+        [centerX, centerY],
         [centerX + 50, centerY + 50 * Math.sqrt(3)],
     ];
 
+    console.log("hello");
     var squares = coords.map(([x, y]) => Bodies.rectangle(x, y, 20, 20));
     squares.push(core);
 
@@ -80,5 +81,6 @@ function createShip() {
 }
 
 createGround();
+console.log("hi");
 createShip();
 createRedCircle();

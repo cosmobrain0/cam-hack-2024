@@ -6,7 +6,7 @@ function applyRotate(body, amount) {
 function boost(body, amount) {
     Body.applyForce(body, body.position, Vector.rotate(
         Vector.create(amount, 0),
-        body.angle + 2 * Math.PI / 3)
+        body.angle - Math.PI/2)
     );
 }
 
