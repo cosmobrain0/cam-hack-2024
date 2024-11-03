@@ -15,8 +15,8 @@ var deltaTime = 0.1;
 
     let currentTime = performance.now();
     deltaTime = currentTime - previousUpdateTime;
-    scoreDecay += deltaTime / (500) // 100 * shipParts? it returned NaN
-    scoreDecay = Math.min(30, scoreDecay)
+    scoreDecay += deltaTime / (500); // 100 * shipParts? it returned NaN
+    scoreDecay = Math.min(30, scoreDecay);
     score -= scoreDecay / 5;
     score = Math.max(score, 0);
     previousUpdateTime = currentTime;
