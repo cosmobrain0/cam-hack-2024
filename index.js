@@ -16,7 +16,7 @@ var deltaTime = 0.1;
     let currentTime = performance.now();
     deltaTime = currentTime - previousUpdateTime;
     if (!gameOver) {
-        scoreDecay += deltaTime / (500); // 100 * shipParts? it returned NaN
+        scoreDecay += deltaTime / (500); // still need part count, 100 x 5
         scoreDecay = Math.min(30, scoreDecay);
         score -= scoreDecay / 5;
         score = Math.max(score, 0);
