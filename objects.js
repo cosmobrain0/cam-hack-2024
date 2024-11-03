@@ -161,7 +161,11 @@ window.addEventListener('load', _ => {
             && (pair.bodyA.parent === ship || pair.bodyB.parent === ship)
         );
 
-        if (asteroidPair) gameOver = true;
+        if (asteroidPair) {
+            gameOver = true;
+            let sound = new Audio("./sounds/sfx_-_death_explosion.ogg");
+            sound.play();
+        }
     });
 
     Events.on(renderer, 'beforeRender', _ => {
