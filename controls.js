@@ -1,20 +1,35 @@
 function applyRotate(body, amount) {
-    // let angular = Body.getAngularVelocity(body);
-    Body.setAngularVelocity(body, amount);
+    let angular = Body.getAngularVelocity(body);
+    Body.setAngularVelocity(body, angular + amount * deltaTime / 1000);
 }
 
 function boost(body, amount) {
-    Body.setVelocity(body, Vector.rotate(
+    Body.applyForce(body, body.position, Vector.rotate(
         Vector.create(amount, 0),
         body.angle + 2 * Math.PI / 3)
     );
 }
 
-window.addEventListener('keydown', e => {
-    if (e.key == "a") applyRotate(ship, -0.1);
-    if (e.key == "d") applyRotate(ship, 0.1);
-    if (e.key == "w") boost(ship, 10);
-});
+let keybinds = {
+    "a": () => applyRotate(ship, -0.1),
+    "d": () => applyRotate(ship, 0.1),
+    "w": () => boost(ship, 0.005),
+}
+
+function smoothApply() {
+    window.addEventListener('keydown', e => {
+        if (keybinds[e.key]) {
+            runQueue.set(e.key, keybinds[e.key]);
+        }
+    });
+    window.addEventListener('keyup', e => {
+        if (keybinds[e.key] && runQueue.has(e.key)) {
+            runQueue.delete(e.key);
+        }
+    });
+}
+
+smoothApply();
 
 /**
     @param {Matter.Body} box

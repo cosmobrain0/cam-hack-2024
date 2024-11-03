@@ -16,21 +16,27 @@ var engine = Engine.create({
 
 let canvas;
 let previousUpdateTime = Date.now();
+var runQueue = new Map();
+var deltaTime = 0.1;
 
 (function run() {
     if (!canvas) {
         canvas = document.getElementsByTagName("canvas")[0];
     }
+
     if (canvas) {
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
     }
+
     let currentTime = Date.now();
+    deltaTime = currentTime - previousUpdateTime;
+    Engine.update(engine, deltaTime);
+    previousUpdateTime = currentTime;
 
     // boxA.angle = boxB.angle = Vector.angle(Vector.sub(boxB.position, boxA.position), Vector.create(1, 0));
-    Engine.update(engine, currentTime-previousUpdateTime);
-
-    previousUpdateTime = currentTime;
+    
+    runQueue.values().forEach(f => f());
     window.requestAnimationFrame(run);
 })();
 
