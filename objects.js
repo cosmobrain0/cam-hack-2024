@@ -119,8 +119,8 @@ window.addEventListener('load', _ => {
                     }
                     Matter.Composite.remove(engine.world, pair.bodyA);
                     Matter.Composite.remove(engine.world, pair.bodyB);
-                    scoreDecay = 30;
-                    score -= 50;
+                    scoreDecay += 20;
+                    score -= 5000;
                     applyRotate(ship, Math.random()*20 - 10);
                 }
             }
@@ -151,7 +151,10 @@ window.addEventListener('load', _ => {
             && (pair.bodyA.parent === ship || pair.bodyB.parent === ship)
         );
 
-        if (asteroidPair) gameOver = true;
+        if (asteroidPair) {
+            applyRotate(ship, 135); 
+            gameOver = true;
+        }
     });
 
     Events.on(renderer, 'beforeRender', _ => {
