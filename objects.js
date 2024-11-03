@@ -39,7 +39,8 @@ function constructAsteroid() {
         40,
         {
             render: {fillStyle: "#fff"},
-            frictionAir: 0
+            frictionAir: 0,
+            label: "Asteroid",
         }
     );
 
@@ -108,7 +109,11 @@ window.addEventListener('load', _ => {
     Events.on(engine, 'collisionStart', function (event) {
         const pairs = event.pairs;
 
-        let collidingPair = pairs.find(pair => pair.bodyA === redCircle || pair.bodyB === redCircle);
+        let collidingPair = pairs.find(pair => 
+            (pair.bodyA === redCircle || pair.bodyB === redCircle)
+            && pair.bodyA.label != "Asteroid"
+            && pair.bodyB.label != "Asteroid"
+        );
         if (collidingPair) {
             let other = redCircle == collidingPair.bodyA ? collidingPair.bodyB : collidingPair.bodyA;
             if (ship.parts.includes(other)) other = ship;
