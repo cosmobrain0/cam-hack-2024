@@ -163,6 +163,7 @@ window.addEventListener('load', _ => {
         // Bounds.translate(renderer.bounds, Vector.create(100, 0));
         let ctx = renderer.context;
         ctx.font = "bold 48px 'Bebas Neue'";
+
     });
     Events.on(renderer, 'afterRender', _ => {
         const distanceThreshold = 150;
@@ -179,7 +180,7 @@ window.addEventListener('load', _ => {
             ctx.beginPath();
             ctx.arc(centre.x+offset.x, centre.y+offset.y, 10.0, offsetAngle-5*Math.PI/4, offsetAngle-3*Math.PI/4);
             ctx.lineTo(centre.x+offset.x, centre.y+offset.y);
-            ctx.globalAlpha = Math.max(0, (originalDistance/1000) - 0.1) 
+            ctx.globalAlpha = Math.max(0, (originalDistance/400) - 0.25) 
             ctx.fillStyle = "#f00";
             ctx.fill();
             ctx.globalAlpha = 1
