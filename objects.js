@@ -133,7 +133,13 @@ window.addEventListener('load', _ => {
         renderer.canvas.width = window.innerWidth;
         renderer.canvas.height = window.innerHeight;
         // Matter.Bounds.translate(renderer.bounds, Vector.create(100, 0));
+
+
+
+
     });
+
+
     Events.on(renderer, 'afterRender', _ => {
         const distanceThreshold = 150;
 

@@ -9,11 +9,21 @@
 				box-sizing: border-box;
 				overflow: hidden;
 			}
+            body {
+                /* Make the canvas take up the entire viewport */
+                width: 100vw;
+                height: 100vh;
+                /* Or, use a background image */
+                background-image: url('Background_space.png');
+                background-size: cover;
+                background-position: center;
+            }
 
 			#overlay {
 				z-index: 1;
 				position: absolute;
 			}
+
 		</style>
 	</head>
 	<body>
