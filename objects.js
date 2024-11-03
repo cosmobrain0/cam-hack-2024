@@ -118,6 +118,9 @@ window.addEventListener('load', _ => {
                     }
                     Matter.Composite.remove(engine.world, pair.bodyA);
                     Matter.Composite.remove(engine.world, pair.bodyB);
+                    scoreDecay = 30;
+                    score -= 50;
+                    applyRotate(ship, Math.random()*20 - 10);
                 }
             }
         }
