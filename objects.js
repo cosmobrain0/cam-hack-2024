@@ -31,19 +31,19 @@ function repositionCircle() {
 
 function constructAsteroid() {
     let angle = Math.random() * 2 * Math.PI;
-    let radius = -Math.log2(Math.random()) * 1000;
+    let radius = -Math.log2(Math.random()) * 5000;
     let asteroid = Matter.Bodies.rectangle(
         radius * Math.cos(angle),
         radius * Math.sin(angle),
-        10,
-        10,
+        40,
+        40,
         {
             render: {fillStyle: "#fff"},
             frictionAir: 0
         }
     );
 
-    Matter.Body.setAngularSpeed(asteroid, Math.random());
+    Matter.Body.setAngularSpeed(asteroid, Math.random() / 10);
     Matter.Body.setVelocity(
         asteroid,
         Vector.rotate(Vector.create(Math.random(), 0), Math.random() * 2 * Math.PI)
