@@ -143,6 +143,8 @@ window.addEventListener('load', _ => {
         renderer.canvas.width = window.innerWidth;
         renderer.canvas.height = window.innerHeight;
         // Bounds.translate(renderer.bounds, Vector.create(100, 0));
+        let ctx = renderer.context;
+        ctx.font = "bold 48px 'Bebas Neue'";
     });
     Events.on(renderer, 'afterRender', _ => {
         const distanceThreshold = 150;
@@ -164,6 +166,6 @@ window.addEventListener('load', _ => {
         }
 
         ctx.fillStyle = "#fff";
-        ctx.fillText(`Score: ${Math.round(score)}`, 50, 50);
+        ctx.fillText(`Score: ${Math.round(score)}`, 80, 80);
     })
 })
