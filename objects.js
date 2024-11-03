@@ -139,6 +139,9 @@ window.addEventListener('load', _ => {
             scoreDecay = 0
             Composite.add(engine.world, [constructConstraint(other, redCircle)]);
             repositionCircle();
+
+            let sound = new Audio("./sounds/item_pickup.wav");
+            sound.play();
         }
 
         let asteroidPair = pairs.find(pair =>
