@@ -1,19 +1,3 @@
-// module aliases
-var Engine = Matter.Engine,
-    Render = Matter.Render,
-    Runner = Matter.Runner,
-    Bodies = Matter.Bodies,
-    Body = Matter.Body,
-    Composite = Matter.Composite,
-    Vector = Matter.Vector,
-    Events = Matter.Events,
-    Constraint = Matter.Constraint;
-
-// create an engine
-var engine = Engine.create({
-    gravity: Vector.create(0, 0)
-});
-
 let canvas;
 let previousUpdateTime = performance.now();
 var keyMap = new Map();
@@ -31,8 +15,12 @@ var deltaTime = 0.1;
 
     let currentTime = performance.now();
     deltaTime = currentTime - previousUpdateTime;
-    score -= deltaTime;
-    score = Math.max(score, 0);
+    if (!gameOver) {
+        scoreDecay += deltaTime / (500); // still need part count, 100 x 5
+        scoreDecay = Math.min(30, scoreDecay);
+        score -= scoreDecay / 5;
+        score = Math.max(score, 0);
+    }
     previousUpdateTime = currentTime;
     Engine.update(engine, deltaTime);
 
@@ -42,7 +30,6 @@ var deltaTime = 0.1;
     window.requestAnimationFrame(run);
 })();
 
-let highlightedBody = null;
 createShip();
 let renderer = Render.create({
     element: document.body, 
@@ -69,4 +56,9 @@ const selectSquare = () => {
 const selectRectangle = () => {
     shapeMode = "rectangle";
 };
+
+bgMusic = new Audio("./sounds/rhythm_gardenmix6_0.ogg");
+bgMusic.loop = true;
+bgMusic.volume = 0.5;
+var isPlayingBgMusic = false;
 
