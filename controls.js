@@ -20,7 +20,7 @@ window.addEventListener('keydown', e => {
     @param {Matter.Body} box
     @param {Matter.Vector} localVelocity
 */
-const accelarate = (box, localVelocity) => {
+const accelerate = (box, localVelocity) => {
     let acceleration = Vector.rotate(localVelocity, box.angle);
     box.force.x += acceleration.x;
     box.force.y += acceleration.y;

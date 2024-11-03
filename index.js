@@ -96,7 +96,7 @@ Render.run(renderer);
 
 let shapeMode = "";
 
-// toggle for sqaure button
+// toggle for square button
 const selectSquare = () => {
     shapeMode = "square";
 };
