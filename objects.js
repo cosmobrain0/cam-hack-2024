@@ -28,14 +28,15 @@ function repositionCircle() {
     redCircle = createRedCircle();
 }
 
-function constructConstraint(a, b) {
+function constructConstraint(a, b, stiffness) {
     return Constraint.create({
         bodyA: a,
         bodyB: b,
-        stiffness: 1
+        stiffness: stiffness !== null && stiffness !== undefined ? stiffness : 1
     });
 }
 
+/** @type {Matter.Body} */
 let ship;
 
 function createShip() {
@@ -78,7 +79,8 @@ window.addEventListener('load', _ => {
         let collidingPair = pairs.find(pair => pair.bodyA === redCircle || pair.bodyB === redCircle);
         if (collidingPair) {
             let other = redCircle == collidingPair.bodyA ? collidingPair.bodyB : collidingPair.bodyA;
-            Composite.add(engine.world, [constructConstraint(ship, redCircle)]);
+            if (ship.parts.includes(other)) other = ship;
+            Composite.add(engine.world, [constructConstraint(other, redCircle, 0.02)]);
             repositionCircle();
         }
     });
