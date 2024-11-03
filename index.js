@@ -54,3 +54,7 @@ const selectRectangle = () => {
     shapeMode = "rectangle";
 };
 
+bgMusic = new Audio("./sounds/rhythm_gardenmix6_0.ogg");
+bgMusic.loop = true;
+var isPlayingBgMusic = false;
+
