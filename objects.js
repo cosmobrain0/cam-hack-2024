@@ -119,7 +119,7 @@ window.addEventListener('load', _ => {
             if (ship.parts.includes(other)) other = ship;
             shipParts++;
             score += scoreIncrease;
-            scoreDecay = 0
+            scoreDecay = 0;
             Composite.add(engine.world, [constructConstraint(other, redCircle)]);
             repositionCircle();
         }
