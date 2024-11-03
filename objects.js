@@ -117,7 +117,16 @@ function createShip() {
     let centerY = window.innerHeight / 2;
     let inner = 100 / Math.sqrt(3);
 
-    let core = Bodies.rectangle(centerX, centerY + inner, 40, 40);
+    let core = Bodies.rectangle(centerX, centerY + inner, 60, 60,
+        {render: {
+            sprite: {
+                texture: "img/spaceship.png",
+                xScale: 1.5,
+                yScale: 1.5
+            }
+        }}
+    );
+
     let coords = [
         [centerX - 50, centerY + 50 * Math.sqrt(3), "Left"],
         [centerX, centerY, "Centre"],
@@ -138,7 +147,7 @@ function createShip() {
     // Composite.add(engine.world, squares);
     // Composite.add(engine.world, constraints);
 
-    ship = Body.create({parts: squares});
+    ship = core;
     Composite.add(engine.world, ship);
 }
 
