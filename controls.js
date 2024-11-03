@@ -19,12 +19,12 @@ let keybinds = {
 function smoothApply() {
     window.addEventListener('keydown', e => {
         if (keybinds[e.key]) {
-            runQueue.set(e.key, keybinds[e.key]);
+            keyMap.set(e.key, keybinds[e.key]);
         }
     });
     window.addEventListener('keyup', e => {
-        if (keybinds[e.key] && runQueue.has(e.key)) {
-            runQueue.delete(e.key);
+        if (keybinds[e.key] && keyMap.has(e.key)) {
+            keyMap.delete(e.key);
         }
     });
 }

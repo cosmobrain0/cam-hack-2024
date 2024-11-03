@@ -16,7 +16,7 @@ var engine = Engine.create({
 
 let canvas;
 let previousUpdateTime = performance.now();
-var runQueue = new Map();
+var keyMap = new Map();
 var deltaTime = 0.1;
 
 (function run() {
@@ -36,7 +36,7 @@ var deltaTime = 0.1;
 
     // boxA.angle = boxB.angle = Vector.angle(Vector.sub(boxB.position, boxA.position), Vector.create(1, 0));
     
-    runQueue.values().forEach(f => f());
+    keyMap.values().forEach(f => f());
     window.requestAnimationFrame(run);
 })();
 

@@ -10,9 +10,9 @@ function createRedCircle() {
 
     // Create a circle and add it to the world
     redCircle = Bodies.circle(x, y, 30, {
-        isStatic: true, // Prevents it from being affected by gravity
+        isSensor: true,
         render: {
-            strokeStyle: '#f00', // Set stroke (outline) color to red
+            fillStyle: '#f00',
         }
     });
 
