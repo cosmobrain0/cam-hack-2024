@@ -1,19 +1,3 @@
-// module aliases
-var Engine = Matter.Engine,
-    Render = Matter.Render,
-    Runner = Matter.Runner,
-    Bodies = Matter.Bodies,
-    Body = Matter.Body,
-    Composite = Matter.Composite,
-    Vector = Matter.Vector,
-    Events = Matter.Events,
-    Constraint = Matter.Constraint;
-
-// create an engine
-var engine = Engine.create({
-    gravity: Vector.create(0, 0)
-});
-
 let canvas;
 let previousUpdateTime = performance.now();
 var keyMap = new Map();
@@ -42,7 +26,6 @@ var deltaTime = 0.1;
     window.requestAnimationFrame(run);
 })();
 
-let highlightedBody = null;
 createShip();
 let renderer = Render.create({
     element: document.body, 

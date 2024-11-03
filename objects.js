@@ -32,7 +32,7 @@ function repositionCircle() {
 function constructAsteroid() {
     let angle = Math.random() * 2 * Math.PI;
     let radius = -Math.log2(Math.random()) * 5000;
-    let asteroid = Matter.Bodies.rectangle(
+    let asteroid = Bodies.rectangle(
         radius * Math.cos(angle),
         radius * Math.sin(angle),
         40,
@@ -44,8 +44,8 @@ function constructAsteroid() {
         }
     );
 
-    Matter.Body.setAngularSpeed(asteroid, Math.random() / 10);
-    Matter.Body.setVelocity(
+    Body.setAngularSpeed(asteroid, Math.random() / 10);
+    Body.setVelocity(
         asteroid,
         Vector.rotate(Vector.create(Math.random(), 0), Math.random() * 2 * Math.PI)
     );
@@ -56,7 +56,7 @@ function constructAsteroid() {
 
 function createAsteroids() {
     let asteroids = Array.from({length: 50}, constructAsteroid);
-    Matter.Composite.add(engine.world, asteroids);
+    Composite.add(engine.world, asteroids);
 }
 
 
@@ -129,7 +129,7 @@ window.addEventListener('load', _ => {
         );
 
         if (asteroidPair) {
-            Matter.Composite.remove(engine.world, ship);
+            Composite.remove(engine.world, ship);
             alert("GAME OVER");
         }
     });
@@ -142,7 +142,7 @@ window.addEventListener('load', _ => {
         renderer.bounds.min = Vector.sub(centre, extents);
         renderer.canvas.width = window.innerWidth;
         renderer.canvas.height = window.innerHeight;
-        // Matter.Bounds.translate(renderer.bounds, Vector.create(100, 0));
+        // Bounds.translate(renderer.bounds, Vector.create(100, 0));
     });
     Events.on(renderer, 'afterRender', _ => {
         const distanceThreshold = 150;
