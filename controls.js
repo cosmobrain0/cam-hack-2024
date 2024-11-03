@@ -70,9 +70,13 @@ window.addEventListener('click', e => {
             length: 100,
             stiffness: 1,
         })])
+
+        highlightedBody.render.lineWidth = 0;
         highlightedBody = null;
     } else {
         highlightedBody = body;
+        highlightedBody.render.lineWidth = 5;
+        highlightedBody.render.strokeStyle = "#f00";
     }
 })
 
