@@ -41,6 +41,7 @@ const accelerate = (box, localVelocity) => {
     box.force.y += acceleration.y;
 }
 
+let highlightedBody = null;
 window.addEventListener('click', e => {
     if (!(e.target instanceof HTMLCanvasElement)) return;
     let positionX = e.clientX + renderer.bounds.min.x;
