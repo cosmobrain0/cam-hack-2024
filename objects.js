@@ -131,7 +131,7 @@ window.addEventListener('load', _ => {
 
         if (asteroidPair) {
             Matter.Composite.remove(engine.world, ship);
-            alert("GAME OVER. Your score was ".concat(Math.round((score/100)).toString()).concat("!"));
+            alert("GAME OVER. Your best score was ".concat(Math.round((bestScore/100)).toString()).concat("!"));
         }
     });
 
@@ -167,7 +167,11 @@ window.addEventListener('load', _ => {
         }
 
         ctx.fillStyle = "#fff";
-        ctx.font = "30px monospace";
-        ctx.fillText(`Score: ${Math.round(score/100)}`, 50, 50);
+        ctx.font = "45px monospace";
+        ctx.fillText(`Score: ${Math.round(score/100)}`, 55, 60);
+        ctx.fillStyle = "#aaa";
+        ctx.font = "25px monospace";
+        bestScore = Math.max(bestScore, score);
+        ctx.fillText(`Best: ${Math.round(bestScore/100)}`, 55, 95);
     })
 })
