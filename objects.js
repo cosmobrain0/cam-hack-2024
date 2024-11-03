@@ -5,8 +5,15 @@ function createGround() {
 
 let redCircle;
 function createRedCircle() {
-    const x = Math.random() * (window.innerWidth - 60) + 30 - window.innerWidth/2 + ship.position.x; // To keep it within bounds
-    const y = Math.random() * (window.innerHeight - 60) + 30 - window.innerHeight/2 + ship.position.y; // To keep it within bounds
+
+    // the circles can spawn quite far from the player
+    // and the circles can't spawn too close
+    let x, y;
+    let distance = () => Vector.magnitude(Vector.sub(Vector.create(x, y), ship.position));
+    do {
+        x = Math.random() * (window.innerWidth*2 - 60) + 30 - window.innerWidth + ship.position.x; // To keep it within bounds
+        y = Math.random() * (window.innerHeight*2 - 60) + 30 - window.innerHeight + ship.position.y; // To keep it within bounds
+    } while (distance() <= 60);
 
     // Create a circle and add it to the world
     let redCircle = Bodies.circle(x, y, 10, {
@@ -109,6 +116,7 @@ window.addEventListener('load', _ => {
     redCircle = createRedCircle();
     createAsteroids();
     Events.on(engine, 'collisionStart', function (event) {
+        if (gameOver) return;
         for (let pair of event.pairs) {
             if (asteroids.includes(pair.bodyA) || asteroids.includes(pair.bodyB)) {
                 if (shipParts.includes(pair.bodyA) || shipParts.includes(pair.bodyB)) {
@@ -118,11 +126,15 @@ window.addEventListener('load', _ => {
                     }
                     Matter.Composite.remove(engine.world, pair.bodyA);
                     Matter.Composite.remove(engine.world, pair.bodyB);
+                    scoreDecay = 30;
+                    score -= 50;
+                    applyRotate(ship, Math.random()*20 - 10);
                 }
             }
         }
     });
     Events.on(engine, 'collisionStart', function (event) {
+        if (gameOver) return;
         const pairs = event.pairs;
 
         let collidingPair = pairs.find(pair => 
@@ -149,10 +161,7 @@ window.addEventListener('load', _ => {
             && (pair.bodyA.parent === ship || pair.bodyB.parent === ship)
         );
 
-        if (asteroidPair) {
-            Matter.Composite.remove(engine.world, ship);
-            alert("GAME OVER. Your best score was ".concat(Math.round((getHighScore()/100)).toString()).concat("!"));
-        }
+        if (asteroidPair) gameOver = true;
     });
 
     Events.on(renderer, 'beforeRender', _ => {
@@ -171,11 +180,17 @@ window.addEventListener('load', _ => {
     Events.on(renderer, 'afterRender', _ => {
         const distanceThreshold = 150;
 
+        /** @type {CanvasRenderingContext2D} */
+        let ctx = renderer.context;
+        if (gameOver) {
+            ctx.fillStyle = "#0007";
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+        }
+
         let offset = Vector.sub(redCircle.position, ship.position);
         let originalDistance = Vector.magnitude(offset);
         let distance = Math.min(distanceThreshold, originalDistance);
         offset = Vector.mult(Vector.normalise(offset), distance);
-        let ctx = renderer.context;
         let centre = Vector.create(renderer.canvas.width/2, renderer.canvas.height/2);
 
         if (originalDistance >= distanceThreshold) {
@@ -192,9 +207,14 @@ window.addEventListener('load', _ => {
         ctx.fillStyle = "#fff";
         ctx.font = "45px monospace";
         ctx.fillText(`Score: ${Math.round(score/100)}`, 55, 60);
+        if (gameOver) {
+            let textBounds = ctx.measureText("Press R to restart!");
+            let textWidth = textBounds.actualBoundingBoxRight-textBounds.actualBoundingBoxLeft;
+            ctx.fillText(`Press R to restart!`, window.innerWidth/2-textWidth/2, 60);
+        }
         ctx.fillStyle = "#aaa";
         ctx.font = "25px monospace";
-        updateScore(score);
+        if (!gameOver) updateScore(score);
         ctx.fillText(`Best: ${Math.round(getHighScore()/100)}`, 55, 95);
     })
 })
