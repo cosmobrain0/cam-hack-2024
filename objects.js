@@ -10,7 +10,7 @@ function createRedCircle() {
 
     // Create a circle and add it to the world
     let redCircle = Bodies.circle(x, y, 30, {
-        isSensor: true,
+        isStatic: true,
         render: {
             fillStyle: '#f00',
         }
@@ -24,7 +24,7 @@ function createRedCircle() {
 function repositionCircle() {
 
     // Update the position of the red circle
-    if (redCircle) redCircle.isSensor = false;
+    if (redCircle) redCircle.isStatic = false;
     redCircle = createRedCircle();
 }
 
@@ -38,8 +38,9 @@ function constructConstraint(a, b, stiffness) {
 
 /** @type {Matter.Body} */
 let ship;
-
+let shipParts;
 function createShip() {
+    shipParts = 5;
     let centerX = window.innerWidth / 2;
     let centerY = window.innerHeight / 2;
     let inner = 100 / Math.sqrt(3);
@@ -80,7 +81,8 @@ window.addEventListener('load', _ => {
         if (collidingPair) {
             let other = redCircle == collidingPair.bodyA ? collidingPair.bodyB : collidingPair.bodyA;
             if (ship.parts.includes(other)) other = ship;
-            Composite.add(engine.world, [constructConstraint(other, redCircle, 0.02)]);
+            shipParts++;
+            Composite.add(engine.world, [constructConstraint(other, redCircle)]);
             repositionCircle();
         }
     });
