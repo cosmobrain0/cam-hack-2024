@@ -179,8 +179,10 @@ window.addEventListener('load', _ => {
             ctx.beginPath();
             ctx.arc(centre.x+offset.x, centre.y+offset.y, 10.0, offsetAngle-5*Math.PI/4, offsetAngle-3*Math.PI/4);
             ctx.lineTo(centre.x+offset.x, centre.y+offset.y);
+            ctx.globalAlpha = Math.max(0, (originalDistance/1000) - 0.1) 
             ctx.fillStyle = "#f00";
             ctx.fill();
+            ctx.globalAlpha = 1
         }
 
         ctx.fillStyle = "#fff";
