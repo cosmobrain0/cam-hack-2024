@@ -29,12 +29,12 @@ function repositionCircle() {
     redCircle = createRedCircle();
 }
 
-function constructConstraint(a, b, stiffness) {
+function constructConstraint(a, b, stiffness = 0.0001) {
     return Constraint.create({
         bodyA: a,
         bodyB: b,
         length: Vector.magnitude(Vector.sub(a.position, b.position))*1.05,
-        stiffness: stiffness !== null && stiffness !== undefined ? stiffness : 1
+        stiffness: stiffness,
     });
 }
 
