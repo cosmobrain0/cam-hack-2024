@@ -9,7 +9,7 @@ function createRedCircle() {
     const y = Math.random() * (window.innerHeight - 60) + 30; // To keep it within bounds
 
     // Create a circle and add it to the world
-    redCircle = Bodies.circle(x, y, 30, {
+    let redCircle = Bodies.circle(x, y, 30, {
         isSensor: true,
         render: {
             fillStyle: '#f00',
@@ -17,26 +17,26 @@ function createRedCircle() {
     });
 
     Composite.add(engine.world, redCircle);
+    return redCircle;
 }
 
 // Function to reposition the red circle randomly
 function repositionCircle() {
-    const x = Math.random() * (window.innerWidth - 60) + 30; // To keep it within bounds
-    const y = Math.random() * (window.innerHeight - 60) + 30; // To keep it within bounds
 
     // Update the position of the red circle
-    Body.setPosition(redCircle, { x: x, y: y });
+    if (redCircle) redCircle.isSensor = false;
+    redCircle = createRedCircle();
 }
 
 Events.on(engine, 'collisionStart', function (event) {
     const pairs = event.pairs;
 
-    pairs.forEach(pair => {
-        if (pair.bodyA === redCircle || pair.bodyB === redCircle) {
-            // If red circle collides with any body, reposition it
-            repositionCircle();
-        }
-    });
+    let collidingPair = pairs.find(pair => pair.bodyA === redCircle || pair.bodyB === redCircle);
+    if (collidingPair) {
+        let other = redCircle == collidingPair.bodyA ? collidingPair.bodyB : collidingPair.bodyA;
+        Composite.add(engine.world, [constructConstraint(ship, redCircle)]);
+        repositionCircle();
+    }
 });
 
 function constructConstraint(a, b) {
@@ -83,4 +83,4 @@ function createShip() {
 createGround();
 console.log("hi");
 createShip();
-createRedCircle();
+redCircle = createRedCircle();
