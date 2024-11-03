@@ -43,11 +43,15 @@ const accelerate = (box, localVelocity) => {
 
 window.addEventListener('click', e => {
     if (!(e.target instanceof HTMLCanvasElement)) return;
-    let body = Matter.Query.point(Composite.allBodies(engine.world), Vector.create(e.clientX, e.clientY))[0];
+    let positionX = e.clientX + renderer.bounds.min.x;
+    let positionY = e.clientY + renderer.bounds.min.y;
+
+    let body = Matter.Query.point(
+        Composite.allBodies(engine.world),
+        Vector.create(positionX, positionY)
+    )[0];
+
     if (!body) {
-        let positionX = e.clientX;
-        let positionY = e.clientY;
-    
         switch(shapeMode) {
             case "square":
                 Composite.add(engine.world, Bodies.rectangle(positionX, positionY, 50, 50));
@@ -66,9 +70,13 @@ window.addEventListener('click', e => {
             length: 100,
             stiffness: 1,
         })])
+
+        highlightedBody.render.lineWidth = 0;
         highlightedBody = null;
     } else {
         highlightedBody = body;
+        highlightedBody.render.lineWidth = 5;
+        highlightedBody.render.strokeStyle = "#f00";
     }
 })
 
