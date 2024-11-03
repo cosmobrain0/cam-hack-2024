@@ -118,6 +118,6 @@ window.addEventListener('load', _ => {
         }
 
         ctx.fillStyle = "#fff";
-        ctx.fillText(`Score: ${score}`, 50, 50);
+        ctx.fillText(`Score: ${Math.round(score)}`, 50, 50);
     })
 })
