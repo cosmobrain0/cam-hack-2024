@@ -15,7 +15,7 @@ var engine = Engine.create({
 });
 
 let canvas;
-let previousUpdateTime = Date.now();
+let previousUpdateTime = performance.now();
 var runQueue = new Map();
 var deltaTime = 0.1;
 
@@ -29,7 +29,7 @@ var deltaTime = 0.1;
         canvas.height = window.innerHeight;
     }
 
-    let currentTime = Date.now();
+    let currentTime = performance.now();
     deltaTime = currentTime - previousUpdateTime;
     Engine.update(engine, deltaTime);
     previousUpdateTime = currentTime;
