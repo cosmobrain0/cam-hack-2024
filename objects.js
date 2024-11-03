@@ -54,8 +54,9 @@ function constructAsteroid() {
 }
 
 
+let asteroids;
 function createAsteroids() {
-    let asteroids = Array.from({length: 50}, constructAsteroid);
+    asteroids = Array.from({length: 50}, constructAsteroid);
     Composite.add(engine.world, asteroids);
 }
 
@@ -71,9 +72,10 @@ function constructConstraint(a, b, stiffness = 0.0001) {
 
 /** @type {Matter.Body} */
 let ship;
-let shipParts;
+let shipPartsCount;
+let shipParts = [];
 function createShip() {
-    shipParts = 5;
+    shipPartsCount = 5;
     let centerX = window.innerWidth / 2;
     let centerY = window.innerHeight / 2;
     let inner = 100 / Math.sqrt(3);
@@ -107,6 +109,20 @@ window.addEventListener('load', _ => {
     redCircle = createRedCircle();
     createAsteroids();
     Events.on(engine, 'collisionStart', function (event) {
+        for (let pair of event.pairs) {
+            if (asteroids.includes(pair.bodyA) || asteroids.includes(pair.bodyB)) {
+                if (shipParts.includes(pair.bodyA) || shipParts.includes(pair.bodyB)) {
+                    // delete both parts and constraints
+                    for (let constraint of Matter.Composite.allConstraints(engine.world).filter(x => x.bodyB == pair.bodyA || x.bodyB == pair.bodyB)) {
+                       Matter.Composite.remove(engine.world, constraint, true); 
+                    }
+                    Matter.Composite.remove(engine.world, pair.bodyA);
+                    Matter.Composite.remove(engine.world, pair.bodyB);
+                }
+            }
+        }
+    });
+    Events.on(engine, 'collisionStart', function (event) {
         const pairs = event.pairs;
 
         let collidingPair = pairs.find(pair => 
@@ -117,9 +133,10 @@ window.addEventListener('load', _ => {
         if (collidingPair) {
             let other = redCircle == collidingPair.bodyA ? collidingPair.bodyB : collidingPair.bodyA;
             if (ship.parts.includes(other)) other = ship;
-            shipParts++;
+            shipPartsCount++;
+            shipParts.push(redCircle);
             score += scoreIncrease;
-            scoreDecay = 0;
+            scoreDecay = 0
             Composite.add(engine.world, [constructConstraint(other, redCircle)]);
             repositionCircle();
         }
