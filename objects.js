@@ -5,8 +5,15 @@ function createGround() {
 
 let redCircle;
 function createRedCircle() {
-    const x = Math.random() * (window.innerWidth - 60) + 30 - window.innerWidth/2 + ship.position.x; // To keep it within bounds
-    const y = Math.random() * (window.innerHeight - 60) + 30 - window.innerHeight/2 + ship.position.y; // To keep it within bounds
+
+    // the circles can spawn quite far from the player
+    // and the circles can't spawn too close
+    let x, y;
+    let distance = () => Vector.magnitude(Vector.sub(Vector.create(x, y), ship.position));
+    do {
+        x = Math.random() * (window.innerWidth*2 - 60) + 30 - window.innerWidth + ship.position.x; // To keep it within bounds
+        y = Math.random() * (window.innerHeight*2 - 60) + 30 - window.innerHeight + ship.position.y; // To keep it within bounds
+    } while (distance() <= 60);
 
     // Create a circle and add it to the world
     let redCircle = Bodies.circle(x, y, 10, {
