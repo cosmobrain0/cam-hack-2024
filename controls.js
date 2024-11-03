@@ -1,13 +1,17 @@
 function applyRotate(body, amount) {
-    let angular = Body.getAngularVelocity(body);
-    Body.setAngularVelocity(body, angular + amount * deltaTime / 1000);
+    if (!gameOver) { // slightly scuffed fix to prevent player controlling ship post-mortem
+        let angular = Body.getAngularVelocity(body);
+        Body.setAngularVelocity(body, angular + amount * deltaTime / 1000);
+    }
 }
 
 function boost(body, amount) {
-    Body.applyForce(body, body.position, Vector.rotate(
-        Vector.create(amount, 0),
-        body.angle - Math.PI/2)
-    );
+    if (!gameOver) { // see above
+        Body.applyForce(body, body.position, Vector.rotate(
+            Vector.create(amount, 0),
+            body.angle - Math.PI/2)
+        );
+    }
 }
 
 let keybinds = {

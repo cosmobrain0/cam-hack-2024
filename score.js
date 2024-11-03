@@ -24,3 +24,5 @@ updateScore(score);
 let restartGame = () => {
   location.reload(); // this is a beautiful, wonderful, great idea with no flaws whatsoever
 }
+
+setInterval(() => spawnNewAsteroid(), 5000);

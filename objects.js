@@ -28,6 +28,27 @@ function createRedCircle() {
     return redCircle;
 }
 
+function spawnNewAsteroid(oldToDelete) {
+    let index;
+    if (oldToDelete) {
+        index = asteroids.indexOf(oldToDelete);
+        Matter.Composite.remove(engine.world, oldToDelete);
+    } else {
+        let distance = x => Vector.magnitude(Vector.sub(x.position, ship.position));
+        index = 0;
+        let bestDistance = distance(asteroids[0]);
+        for (let i=1; i<asteroids.length; i++) {
+            let currentDistance = distance(asteroids[i]);
+            if (currentDistance <= bestDistance) {
+                index = i;
+                bestDistance = currentDistance;
+            }
+        }
+        Matter.Composite.remove(engine.world, oldToDelete);
+    }
+    asteroids[index] = constructAsteroid();
+}
+
 // Function to reposition the red circle randomly
 function repositionCircle() {
 
@@ -39,13 +60,17 @@ function repositionCircle() {
 function constructAsteroid() {
     let angle = Math.random() * 2 * Math.PI;
     let radius = Math.max(-Math.log2(Math.random()) * 5000, 200);
-    let asteroid = Bodies.rectangle(
+    let asteroid = Matter.Bodies.rectangle(
         radius * Math.cos(angle),
         radius * Math.sin(angle),
         40,
         40,
         {
-            render: {fillStyle: "#fff"},
+            render: { sprite: {
+                texture: 'img/asteroid.png',
+                xScale: 45/512,
+                yScale: 45/512,
+            } },
             frictionAir: 0,
             label: "Asteroid",
         }
@@ -126,8 +151,8 @@ window.addEventListener('load', _ => {
                     }
                     Matter.Composite.remove(engine.world, pair.bodyA);
                     Matter.Composite.remove(engine.world, pair.bodyB);
-                    scoreDecay = 30;
-                    score -= 50;
+                    scoreDecay += 20;
+                    score -= 5000;
                     applyRotate(ship, Math.random()*20 - 10);
                 }
             }
@@ -162,9 +187,10 @@ window.addEventListener('load', _ => {
         );
 
         if (asteroidPair) {
-            gameOver = true;
             let sound = new Audio("./sounds/sfx_-_death_explosion.ogg");
             sound.play();
+            applyRotate(ship, 135); 
+            gameOver = true;
         }
     });
 
