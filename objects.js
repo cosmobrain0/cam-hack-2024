@@ -93,7 +93,7 @@ function constructAsteroid(offscreen = false) {
 
 let asteroids;
 function createAsteroids() {
-    asteroids = Array.from({length: 50}, constructAsteroid);
+    asteroids = Array.from({length: 100}, constructAsteroid);
     Composite.add(engine.world, asteroids);
 }
 
