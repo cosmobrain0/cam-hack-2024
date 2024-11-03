@@ -82,6 +82,7 @@ window.addEventListener('load', _ => {
             let other = redCircle == collidingPair.bodyA ? collidingPair.bodyB : collidingPair.bodyA;
             if (ship.parts.includes(other)) other = ship;
             shipParts++;
+            score += scoreIncrease;
             Composite.add(engine.world, [constructConstraint(other, redCircle)]);
             repositionCircle();
         }
@@ -115,5 +116,8 @@ window.addEventListener('load', _ => {
             ctx.fillStyle = "#f00";
             ctx.fill();
         }
+
+        ctx.fillStyle = "#fff";
+        ctx.fillText(`Score: ${score}`, 50, 50);
     })
 })
