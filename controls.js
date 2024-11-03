@@ -24,6 +24,7 @@ let keybinds = {
 
 function smoothApply() {
     window.addEventListener('keydown', e => {
+        if (!isPlayingBgMusic) bgMusic.play();
         if (keybinds[e.key]) {
             keyMap.set(e.key, keybinds[e.key]);
         }
@@ -49,6 +50,7 @@ const accelerate = (box, localVelocity) => {
 
 let highlightedBody = null;
 window.addEventListener('click', e => {
+    if (!isPlayingBgMusic) bgMusic.play();
     if (!(e.target instanceof HTMLCanvasElement)) return;
     let positionX = e.clientX + renderer.bounds.min.x;
     let positionY = e.clientY + renderer.bounds.min.y;
