@@ -1,11 +1,19 @@
 function applyRotate(body, amount) {
-    let angular = Matter.Body.getAngularVelocity;
-    Matter.Body.setAngularVelocity(body, angular + amount);
+    // let angular = Body.getAngularVelocity(body);
+    Body.setAngularVelocity(body, amount);
+}
+
+function boost(body, amount) {
+    Body.setVelocity(body, Vector.rotate(
+        Vector.create(amount, 0),
+        body.angle + 2 * Math.PI / 3)
+    );
 }
 
 window.addEventListener('keydown', e => {
-    if (e.key == "a") accelarate(boxA, Vector.create(0, -0.2));
-    if (e.key == "d") accelarate(boxB, Vector.create(0, -0.2));
+    if (e.key == "a") applyRotate(ship, -0.1);
+    if (e.key == "d") applyRotate(ship, 0.1);
+    if (e.key == "w") boost(ship, 10);
 });
 
 /**

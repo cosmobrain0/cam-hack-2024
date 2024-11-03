@@ -3,8 +3,6 @@ function createGround() {
     Composite.add(engine.world, [ground]);
 }
 
-createGround();
-
 let redCircle;
 function createRedCircle() {
     const x = Math.random() * (window.innerWidth - 60) + 30; // To keep it within bounds
@@ -41,4 +39,43 @@ Events.on(engine, 'collisionStart', function (event) {
     });
 });
 
+function constructConstraint(a, b) {
+    return Constraint.create({
+        bodyA: a,
+        bodyB: b,
+        stiffness: 1
+    });
+}
+
+let ship;
+
+function createShip() {
+    let centerX = window.innerWidth / 2;
+    let centerY = window.innerHeight / 2;
+    let inner = 100 / Math.sqrt(3);
+
+    let core = Bodies.rectangle(centerX, centerY + inner, 20, 20);
+    Composite.add(engine.world, core);
+
+    let coords = [
+        [centerX, centerY],
+        [centerX - 50, centerY + 50 * Math.sqrt(3)],
+        [centerX + 50, centerY + 50 * Math.sqrt(3)],
+    ];
+
+    let squares = coords.map(([x, y]) => Bodies.rectangle(x, y, 20, 20));
+    Body.setParts(core, squares);
+
+    // let constraints = squares.flatMap((a, i) =>
+    //     squares
+    //     .slice(i + 1)
+    //     .map(b => constructConstraint(a, b))
+    // )
+    // Composite.add(engine.world, constraints);
+
+    ship = core;
+}
+
+createGround();
+createShip();
 createRedCircle();

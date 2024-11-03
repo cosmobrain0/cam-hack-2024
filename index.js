@@ -11,7 +11,7 @@ var Engine = Matter.Engine,
 
 // create an engine
 var engine = Engine.create({
-    // gravity: Vector.create(0, 0)
+    gravity: Vector.create(0, 0)
 });
 
 let canvas;
