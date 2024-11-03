@@ -11,8 +11,8 @@ function boost(body, amount) {
 }
 
 let keybinds = {
-    "a": () => applyRotate(ship, -0.08*shipParts),
-    "d": () => applyRotate(ship, 0.08*shipParts),
+    "a": () => applyRotate(ship, -0.04*shipParts),
+    "d": () => applyRotate(ship, 0.04*shipParts),
     "w": () => boost(ship, 0.0002*shipParts),
 }
 

@@ -9,8 +9,9 @@ function createRedCircle() {
     const y = Math.random() * (window.innerHeight - 60) + 30 - window.innerHeight/2 + ship.position.y; // To keep it within bounds
 
     // Create a circle and add it to the world
-    let redCircle = Bodies.circle(x, y, 30, {
-        isStatic: true,
+    let redCircle = Bodies.circle(x, y, 10, {
+        isStatic: false,
+        density: 0.01,
         render: {
             fillStyle: '#f00',
         }
@@ -32,6 +33,7 @@ function constructConstraint(a, b, stiffness) {
     return Constraint.create({
         bodyA: a,
         bodyB: b,
+        length: Vector.magnitude(Vector.sub(a.position, b.position))*1.05,
         stiffness: stiffness !== null && stiffness !== undefined ? stiffness : 1
     });
 }
@@ -91,7 +93,7 @@ window.addEventListener('load', _ => {
     Events.on(renderer, 'beforeRender', _ => {
         console.log("before render");
         // change the `10` to `0` to make the camera follow properly
-        let centre = Vector.sub(ship.position, Vector.mult(ship.velocity, 10)); 
+        let centre = Vector.sub(ship.position, Vector.mult(ship.velocity, 0)); 
         let extents = Vector.create(window.innerWidth/2, window.innerHeight/2);
         renderer.bounds.max = Vector.add(centre, extents);
         renderer.bounds.min = Vector.sub(centre, extents);
